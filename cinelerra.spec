@@ -3,17 +3,16 @@
 Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl):	Cinelerra - nagrywanie, obróbka i produkcja materia³u audio/video
 Name:		cinelerra
-Version:	1.1.6
+Version:	1.1.7
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
-# Source0-md5:	a7868f0a7d3f45d0fc18a09f066f1aa1
+# Source0-md5:	efdd895b6706da3a450d0bcf92fd5c11
 Patch0:		%{name}-system-libs.patch
 Patch1:		%{name}-libsndfile1.patch
-Patch2:		%{name}-lame.patch
-Patch3:		%{name}-strip.patch
-Patch4:		%{name}-fontsdir.patch
+Patch2:		%{name}-strip.patch
+Patch3:		%{name}-fontsdir.patch
 URL:		http://heroinewarrior.com/cinelerra.php3
 BuildRequires:	XFree86-devel
 # it's sick, but it's true - it uses libuuid functions
@@ -62,10 +61,11 @@ Cinelerra by³a tworzona z my¶l± o zast±pieniu programu Broadcast 2000.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 %build
 CFLAGS="%{rpmcflags} -fno-rtti"; export CFLAGS
+%{__make} -f build/Makefile.toolame
+%{__make} -C mpeg2enc
 %{__make} -C mplexhi
 %{__make} -C mplexlo
 %{__make} -C guicast

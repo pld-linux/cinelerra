@@ -1,12 +1,12 @@
---- cinelerra-1.1.5/cinelerra/filesndfile.C.orig	Sat Nov  2 10:06:39 2002
-+++ cinelerra-1.1.5/cinelerra/filesndfile.C	Fri Mar 21 01:19:58 2003
+--- cinelerra-1.1.7/cinelerra/filesndfile.C.orig	Sat Nov  2 10:06:39 2002
++++ cinelerra-1.1.7/cinelerra/filesndfile.C	Fri Mar 21 01:19:58 2003
 @@ -25,7 +25,7 @@
  	SF_INFO fd_config;
  	fd_config.format = 0;
  //printf("FileSndFile::check_sig 1\n");
 -	SNDFILE *fd = sf_open_read(asset->path, &fd_config);
 +	SNDFILE *fd = sf_open(asset->path, SFM_READ, &fd_config);
- //printf("FileSndFile::check_sig 1\n");
+ //printf("FileSndFile::check_sig 1 %p\n", fd);
  
  	if(fd)
 @@ -56,30 +56,29 @@

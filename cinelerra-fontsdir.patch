@@ -1,11 +1,28 @@
---- cinelerra-1.1.5/plugins/titler/title.C.orig	Mon Nov 11 06:19:10 2002
-+++ cinelerra-1.1.5/plugins/titler/title.C	Mon Mar 24 10:30:30 2003
-@@ -14,7 +14,7 @@
- #include <string.h>
+--- cinelerra-1.1.7/plugins/titler/title.C.orig	2003-07-29 06:20:35.000000000 +0200
++++ cinelerra-1.1.7/plugins/titler/title.C	2003-08-16 23:32:42.547252184 +0200
+@@ -27,7 +27,7 @@
  
+ #define ZERO (1.0 / 64.0)
  
--#define FONT_SEARCHPATH "/usr/lib/cinelerra/fonts"
+-#define FONT_SEARCHPATH "fonts"
 +#define FONT_SEARCHPATH "/usr/share/fonts"
  //#define FONT_SEARCHPATH "/usr/X11R6/lib/X11/fonts"
  
  
+@@ -1030,15 +1030,11 @@
+ 	{
+ 		fonts = new ArrayList<FontEntry*>;
+ // Construct path from location of the plugin
+-		char search_path[BCTEXTLEN];
+-		strcpy(search_path, PluginClient::get_path());
+-		char *ptr = strrchr(search_path, '/');
+-		strcpy(ptr + 1, FONT_SEARCHPATH);
+ 		char command_line[BCTEXTLEN];
+ 
+ 		sprintf(command_line, 
+ 			"find %s -name 'fonts.dir' -print -exec cat {} \\;", 
+-			search_path);
++			FONT_SEARCHPATH);
+ //printf("TitleMain::build_fonts %s\n", command_line);
+ 
+ 		FILE *in = popen(command_line, "r");
