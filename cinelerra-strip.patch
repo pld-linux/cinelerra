@@ -20,3 +20,14 @@
  	../../cinelerra/$(OBJDIR)/bootstrap $(OUTPUT_THEME) data/*.png
  
  include ../../plugin_config
+--- cinelerra-1.1.8/cinelerra/Makefile.orig	2003-11-12 22:55:18.000000000 +0100
++++ cinelerra-1.1.8/cinelerra/Makefile	2003-11-12 23:58:29.493782632 +0100
+@@ -391,7 +391,7 @@
+ # Static linking is not possible because of the way the plugins are loaded
+ $(OUTPUT): $(OBJS) $(BOOTSTRAP)
+ 	$(LINKER) `cat $(OBJDIR)/objs`
+-	strip $(OUTPUT)
++	$(STRIP) $(OUTPUT)
+ 	../guicast/$(OBJDIR)/bootstrap $(OUTPUT) data/mode_*.png
+ 
+ $(OBJDIR)/test: 
