@@ -3,18 +3,19 @@
 Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl):	Cinelerra - nagrywanie, obróbka i produkcja materia³u audio/video
 Name:		cinelerra
-Version:	1.2.0
+Version:	1.2.1
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
-# Source0-md5:	d28addc4526d62d4f11047a3a3e1ac73
+# Source0-md5:	ee230582f2bc7e1e35fc36f92469a78e
 Patch0:		%{name}-system-libs.patch
 Patch1:		%{name}-libsndfile1.patch
 Patch2:		%{name}-strip.patch
 Patch3:		%{name}-fontsdir.patch
 Patch4:		%{name}-alpha.patch
 URL:		http://heroinewarrior.com/cinelerra.php3
+BuildRequires:	OpenEXR-devel >= 1.2.1
 BuildRequires:	XFree86-devel
 BuildRequires:	esound-devel
 BuildRequires:	freetype-devel >= 2.1.4
@@ -28,18 +29,17 @@ BuildRequires:	libuuid-devel
 %ifarch %{ix86}
 BuildRequires:	nasm
 %endif
-BuildRequires:	quicktime4linux-devel >= 2.0.3
+BuildRequires:	quicktime4linux-devel >= 2.0.4
+Requires:	OpenEXR-devel >= 1.2.1
 Requires:	freetype >= 2.1.4
 Requires:	libavc1394 >= 0.4.1
 Requires:	libmpeg3 >= 1.5.3
 Requires:	libsndfile >= 1.0.5
-Requires:	quicktime4linux >= 2.0.3
+Requires:	quicktime4linux >= 2.0.4
 Obsoletes:	bcast
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-# defaulttheme and microtheme cannot be stripped
-# (they have resources appended to linked binary :/)
-%define		no_install_post_strip	1
+%define		_noautostrip	.*/microtheme.plugin
 
 %description
 There are two types of moviegoers: producers who create new content,
@@ -76,6 +76,9 @@ Cinelerra by³a tworzona z my¶l± o zast±pieniu programu Broadcast 2000.
 # assume we have <linux/videodev2.h> (it's in llh)
 echo '#define HAVE_V4L2' > hvirtual_config.h
 
+# Linux ieee1394 ioctls description - no longer provided by libdv
+ln -sf ../$(echo quicktime/libdv-*/libdv/dv1394.h) cinelerra
+
 %build
 CFLAGS="%{rpmcflags} -fno-rtti"; export CFLAGS
 %{__make} -f build/Makefile.toolame
@@ -95,12 +98,6 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}/cinelerra}
 
 install cinelerra/*/cinelerra $RPM_BUILD_ROOT%{_bindir}
 install plugins/`uname -m`/*.plugin $RPM_BUILD_ROOT%{_libdir}/cinelerra
-
-%if 0%{!?debug:1}
-# strip all that can be stripped
-find $RPM_BUILD_ROOT%{_libdir}/cinelerra -name '*.plugin' | \
-	grep -v 'defaulttheme\|microtheme' | xargs strip -R.note -R.comment
-%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
