@@ -3,12 +3,12 @@
 Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl):	Cinelerra - nagrywanie, obróbka i produkcja materia³u audio/video
 Name:		cinelerra
-Version:	1.1.9
+Version:	1.2.0
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
-# Source0-md5:	1e198b3aeb7b8cbc191ccd17a059f49f
+# Source0-md5:	d28addc4526d62d4f11047a3a3e1ac73
 Patch0:		%{name}-system-libs.patch
 Patch1:		%{name}-libsndfile1.patch
 Patch2:		%{name}-strip.patch
@@ -19,20 +19,21 @@ BuildRequires:	XFree86-devel
 BuildRequires:	esound-devel
 BuildRequires:	freetype-devel >= 2.1.4
 BuildRequires:	lame-libs-devel >= 3.93.1
-BuildRequires:	libavc1394-devel >= 0.4.0
+BuildRequires:	libavc1394-devel >= 0.4.1
 BuildRequires:	libmpeg3-devel >= 1.5.3
 BuildRequires:	libsndfile-devel >= 1.0.5
-BuildRequires:	libstdc++-devel
-BuildRequires:	libtiff-devel
+BuildRequires:	libstdc++-devel >= 5:3.2.2
+BuildRequires:	libtiff-devel >= 3.5.7
 BuildRequires:	libuuid-devel
 %ifarch %{ix86}
 BuildRequires:	nasm
 %endif
-BuildRequires:	quicktime4linux-devel >= 2.0.1
+BuildRequires:	quicktime4linux-devel >= 2.0.3
 Requires:	freetype >= 2.1.4
+Requires:	libavc1394 >= 0.4.1
 Requires:	libmpeg3 >= 1.5.3
 Requires:	libsndfile >= 1.0.5
-Requires:	quicktime4linux >= 2.0.1
+Requires:	quicktime4linux >= 2.0.3
 Obsoletes:	bcast
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -71,6 +72,9 @@ Cinelerra by³a tworzona z my¶l± o zast±pieniu programu Broadcast 2000.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+
+# assume we have <linux/videodev2.h> (it's in llh)
+echo '#define HAVE_V4L2' > hvirtual_config.h
 
 %build
 CFLAGS="%{rpmcflags} -fno-rtti"; export CFLAGS
