@@ -92,7 +92,7 @@
  		case SF_FORMAT_PCM_S8:
  			asset->signed_ = 1;
  			asset->bits = BITSLINEAR8;
-@@ -151,13 +137,29 @@
+@@ -151,14 +137,30 @@
  			asset->signed_ = 0;
  			asset->bits = BITSLINEAR8;
  			break;
@@ -118,7 +118,8 @@
  	asset->audio_data = 1;
 -	asset->audio_length = fd_config.samples;
 +	asset->audio_length = fd_config.frames;
- 	asset->sample_rate = fd_config.samplerate;
+ 	if(!asset->sample_rate)
+ 		asset->sample_rate = fd_config.samplerate;
  	asset->channels = fd_config.channels;
 -//printf("FileSndFile::format_to_asset %x %d %d %x\n", fd_config.format & SF_FORMAT_TYPEMASK, fd_config.pcmbitwidth, fd_config.samples, fd_config.format & SF_FORMAT_SUBMASK);
 +//printf("FileSndFile::format_to_asset %x %d %x\n", fd_config.format & SF_FORMAT_TYPEMASK, fd_config.frames, fd_config.format & SF_FORMAT_SUBMASK);

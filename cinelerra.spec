@@ -1,22 +1,19 @@
+# TODO: build guicast as separate, shared library to use in
+#       xmovie, mix2000, cinelerra and bcast 
 Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl):	Cinelerra - nagrywanie, obróbka i produkcja materia³u audio/video
 Name:		cinelerra
-Version:	1.1.5
+Version:	1.1.6
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
-# Source0-md5:	0c9082049bd7b05a80fe604493d8da02
-# yes, it's the same source
-# TODO: build guicast as separate, shared library to use in
-#       xmovie, mix2000, cinelerra and bcast 
-Patch0:		xmovie-c++.patch
-Patch1:		%{name}-system-libs.patch
-Patch2:		%{name}-libsndfile1.patch
-Patch3:		%{name}-c++.patch
-Patch4:		%{name}-lame.patch
-Patch5:		%{name}-strip.patch
-Patch6:		%{name}-fontsdir.patch
+# Source0-md5:	a7868f0a7d3f45d0fc18a09f066f1aa1
+Patch0:		%{name}-system-libs.patch
+Patch1:		%{name}-libsndfile1.patch
+Patch2:		%{name}-lame.patch
+Patch3:		%{name}-strip.patch
+Patch4:		%{name}-fontsdir.patch
 URL:		http://heroinewarrior.com/cinelerra.php3
 BuildRequires:	XFree86-devel
 # it's sick, but it's true - it uses libuuid functions
@@ -66,8 +63,6 @@ Cinelerra by³a tworzona z my¶l± o zast±pieniu programu Broadcast 2000.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
-%patch6 -p1
 
 %build
 CFLAGS="%{rpmcflags} -fno-rtti"; export CFLAGS
