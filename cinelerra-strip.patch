@@ -1,0 +1,22 @@
+--- cinelerra-1.1.5/plugins/defaulttheme/Makefile.orig	Sun Dec 22 11:37:27 2002
++++ cinelerra-1.1.5/plugins/defaulttheme/Makefile	Mon Mar 24 10:23:13 2003
+@@ -6,7 +6,7 @@
+ 
+ OUTPUT_THEME: $(OBJS)
+ 	$(LDLINKER) -o $(OUTPUT_THEME) $(OBJS)
+-	strip $(OUTPUT_THEME)
++	$(STRIP) $(OUTPUT_THEME)
+ 	../../guicast/$(OBJDIR)/bootstrap $(OUTPUT_THEME) data/*.png
+ 
+ 
+--- cinelerra-1.1.5/plugins/microtheme/Makefile.orig	Fri Jun 21 14:35:25 2002
++++ cinelerra-1.1.5/plugins/microtheme/Makefile	Mon Mar 24 10:23:34 2003
+@@ -6,7 +6,7 @@
+ 
+ OUTPUT_THEME: $(OBJS)
+ 	$(LDLINKER) -o $(OUTPUT_THEME) $(OBJS)
+-	strip $(OUTPUT_THEME)
++	$(STRIP) $(OUTPUT_THEME)
+ 	../../cinelerra/$(OBJDIR)/bootstrap $(OUTPUT_THEME) data/*.png
+ 
+ include ../../plugin_config

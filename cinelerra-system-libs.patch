@@ -63,7 +63,7 @@
 -	$(ESOUNDCFLAGS) \
 -	$(ALSA_CFLAGS) \
 -	-I../tiff \
-+	-I/usr/include/quicktime -I../quicktime \
++	-I/usr/include/quicktime \
 +	-I/usr/include/libdv \
 +	-I/usr/include/ogg \
 +	-I/usr/include/vorbis \
@@ -101,7 +101,7 @@
  CFLAGS += -I../ -I../../cinelerra \
  	-I../../guicast \
 -	-I../../quicktime \
-+	-I/usr/include/quicktime -I../../quicktime \
++	-I/usr/include/quicktime \
  	-I../colors
  
  $(shell echo $(CFLAGS) > ../$(OBJDIR)/c_flags)
@@ -160,7 +160,18 @@
 -
 -
 +$(OBJS):
-+	$(CC) -c $(CFLAGS) -I/usr/include/quicktime -I../../quicktime -I../../cinelerra -I../../guicast -I../colors $(subst $(OBJDIR)/,, $*.C) -o $*.o
++	$(CC) -c $(CFLAGS) -I/usr/include/quicktime -I../../cinelerra -I../../guicast -I../colors $(subst $(OBJDIR)/,, $*.C) -o $*.o
  
  $(OBJDIR)/title.o: title.C
  $(OBJDIR)/titlewindow.o: titlewindow.C
+--- cinelerra-1.1.5/cinelerra/jpegwrapper.h.orig	Fri Jun 21 14:35:24 2002
++++ cinelerra-1.1.5/cinelerra/jpegwrapper.h	Mon Mar 24 12:53:00 2003
+@@ -7,7 +7,7 @@
+ extern "C" {
+ #endif
+ 
+-#include "jpeg/jpeglib.h"
++#include <jpeglib.h>
+ 
+ #ifdef __cplusplus
+ }

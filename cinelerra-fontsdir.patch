@@ -1,0 +1,11 @@
+--- cinelerra-1.1.5/plugins/titler/title.C.orig	Mon Nov 11 06:19:10 2002
++++ cinelerra-1.1.5/plugins/titler/title.C	Mon Mar 24 10:30:30 2003
+@@ -14,7 +14,7 @@
+ #include <string.h>
+ 
+ 
+-#define FONT_SEARCHPATH "/usr/lib/cinelerra/fonts"
++#define FONT_SEARCHPATH "/usr/share/fonts"
+ //#define FONT_SEARCHPATH "/usr/X11R6/lib/X11/fonts"
+ 
+ 
