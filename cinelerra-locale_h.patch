@@ -1,0 +1,12 @@
+diff -dur cinelerra-1.2.1.orig/cinelerra/main.C cinelerra-1.2.1/cinelerra/main.C
+--- cinelerra-1.2.1.orig/cinelerra/main.C	2004-07-16 01:07:33.000000000 +0200
++++ cinelerra-1.2.1/cinelerra/main.C	2004-09-13 09:48:59.060956705 +0200
+@@ -14,6 +14,7 @@
+ #include "renderfarmclient.h"
+ #include <stdlib.h>
+ #include <string.h>
++#include <locale.h>
+ 
+ #define PACKAGE "cinelerra"
+ #define LOCALEDIR "/usr/share/locale"
+Only in cinelerra-1.2.1/cinelerra: main.C~
