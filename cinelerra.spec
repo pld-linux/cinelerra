@@ -6,6 +6,7 @@ Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
+# Source0-md5:	0c9082049bd7b05a80fe604493d8da02
 # yes, it's the same source
 # TODO: build guicast as separate, shared library to use in
 #       xmovie, mix2000, cinelerra and bcast 
