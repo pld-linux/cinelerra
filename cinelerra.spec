@@ -1,5 +1,5 @@
 # TODO: build guicast as separate, shared library to use in
-#       xmovie, mix2000, cinelerra and bcast
+#       xmovie, mix2000 and cinelerra
 Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl):	Cinelerra - nagrywanie, obróbka i produkcja materia³u audio/video
 Name:		cinelerra
@@ -33,6 +33,7 @@ Requires:	freetype >= 2.1.4
 Requires:	libmpeg3 >= 1.5.3
 Requires:	libsndfile >= 1.0.5
 Requires:	quicktime4linux >= 2.0.1
+Obsoletes:	bcast
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # defaulttheme and microtheme cannot be stripped
