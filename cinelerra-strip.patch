@@ -1,12 +1,12 @@
---- cinelerra-1.1.5/plugins/defaulttheme/Makefile.orig	Sun Dec 22 11:37:27 2002
-+++ cinelerra-1.1.5/plugins/defaulttheme/Makefile	Mon Mar 24 10:23:13 2003
-@@ -6,7 +6,7 @@
+--- cinelerra-1.2.1/plugins/defaulttheme/Makefile.orig	2004-05-11 18:14:51.000000000 +0200
++++ cinelerra-1.2.1/plugins/defaulttheme/Makefile	2004-08-22 20:38:29.715608048 +0200
+@@ -9,7 +9,7 @@
  
- OUTPUT_THEME: $(OBJS)
- 	$(LDLINKER) -o $(OUTPUT_THEME) $(OBJS)
+ $(OUTPUT_THEME): $(OBJS) $(THEME_DATA)
+ 	$(LDLINKER) -o $(OUTPUT_THEME) $(OBJS) $(THEME_DATA)
 -	strip $(OUTPUT_THEME)
 +	$(STRIP) $(OUTPUT_THEME)
- 	../../guicast/$(OBJDIR)/bootstrap $(OUTPUT_THEME) data/*.png
+ 
  
  
 --- cinelerra-1.1.5/plugins/microtheme/Makefile.orig	Fri Jun 21 14:35:25 2002
@@ -20,14 +20,14 @@
  	../../cinelerra/$(OBJDIR)/bootstrap $(OUTPUT_THEME) data/*.png
  
  include ../../plugin_config
---- cinelerra-1.2.0/cinelerra/Makefile.orig	2004-06-05 01:31:27.950366992 +0200
-+++ cinelerra-1.2.0/cinelerra/Makefile	2004-06-05 01:34:43.197684888 +0200
-@@ -404,7 +404,7 @@
+--- cinelerra-1.2.1/cinelerra/Makefile.orig	2004-08-22 20:32:29.566359056 +0200
++++ cinelerra-1.2.1/cinelerra/Makefile	2004-08-22 20:47:51.109263240 +0200
+@@ -412,7 +412,7 @@
  	@echo LD $(OUTPUT)
  	@$(LINKER) `cat $(OBJDIR)/objs`
  	@echo STRIP $(OUTPUT)
 -	@strip $(OUTPUT)
 +	@$(STRIP) $(OUTPUT)
- 	@echo BOOTSTRAP $(OUTPUT)
- 	@../guicast/$(OBJDIR)/bootstrap $(OUTPUT) data/mode_*.png
  
+ $(OBJDIR)/test: 
+ 	$(CC) -shared -o $(OBJDIR)/test.so \
