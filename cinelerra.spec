@@ -44,15 +44,19 @@ CFLAGS="%{rpmcflags} -fno-rtti"; export CFLAGS
 %{__make} -C mplexhi
 %{__make} -C mplexlo
 %{__make} -C guicast
-%{__make} -C cinerella
-# TODO: titler (w/freetype) fails
+%{__make} -C cinelerra
+# TODO: lame fails (termcap.h not found)
+# TODO: lame should use shared lame library
+# TODO: defaulttheme and microtheme cannot be stripped
+#       (they have resources appended to linked binary :/)
 %{__make} -C plugins
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_bindir}
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}/cinelerra}
 
-install cinerella/*/cinerella $RPM_BUILD_ROOT%{_bindir}
+install cinelerra/*/cinelerra $RPM_BUILD_ROOT%{_bindir}
+install plugins/`uname -m`/*.plugin $RPM_BUILD_ROOT%{_libdir}/cinelerra
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -60,4 +64,4 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
-%{_libdir}/cinerella
+%attr(755,root,root) %{_libdir}/cinelerra

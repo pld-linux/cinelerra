@@ -101,7 +101,7 @@
  CFLAGS += -I../ -I../../cinelerra \
  	-I../../guicast \
 -	-I../../quicktime \
-+	-I/usr/include/quicktime \
++	-I/usr/include/quicktime -I../../quicktime \
  	-I../colors
  
  $(shell echo $(CFLAGS) > ../$(OBJDIR)/c_flags)
@@ -126,3 +126,41 @@
  	-lpthread \
  	-lpng \
  	-lz \
+--- cinelerra-1.1.5/plugins/titler/Makefile.orig	Sat Aug 17 04:26:42 2002
++++ cinelerra-1.1.5/plugins/titler/Makefile	Fri Mar 21 08:40:47 2003
+@@ -1,25 +1,28 @@
+ FREETYPE_DIR = $(shell expr ../../freetype* )
+-CFLAGS += -I$(FREETYPE_DIR)/include -I../../
++CFLAGS += -I/usr/include/freetype2
+ 
+ include ../../global_config
+ 
+ OBJS = $(OBJDIR)/title.o  \
+ 	$(OBJDIR)/titlewindow.o \
+ 	../colors/$(OBJDIR)/colorpicker.o \
+-	../colors/$(OBJDIR)/plugincolors.o \
+-	$(FREETYPE_DIR)/objs/.libs/libfreetype.a
++	../colors/$(OBJDIR)/plugincolors.o
++
++LIBS = -lfreetype
+ 
+ OUTPUT = ../$(OBJDIR)/titler.plugin
+ 
+-include ../../plugin_config
++all: $(OUTPUT)
+ 
+-inst:
++install:
+ 	cp $(OUTPUT) /usr/lib/cinelerra
+ 	cp -a fonts /usr/lib/cinelerra
+ 
++$(OUTPUT) : $(OBJS)
++	$(LDLINKER) -o $(OUTPUT) $(OBJS) $(LIBS)
+ 
+-
+-
++$(OBJS):
++	$(CC) -c $(CFLAGS) -I/usr/include/quicktime -I../../quicktime -I../../cinelerra -I../../guicast -I../colors $(subst $(OBJDIR)/,, $*.C) -o $*.o
+ 
+ $(OBJDIR)/title.o: title.C
+ $(OBJDIR)/titlewindow.o: titlewindow.C
