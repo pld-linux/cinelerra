@@ -1,5 +1,5 @@
 # TODO: build guicast as separate, shared library to use in
-#       xmovie, mix2000, cinelerra and bcast 
+#       xmovie, mix2000, cinelerra and bcast
 Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl):	Cinelerra - nagrywanie, obróbka i produkcja materia³u audio/video
 Name:		cinelerra
