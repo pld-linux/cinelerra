@@ -1,0 +1,128 @@
+--- cinelerra-1.1.5/mplexlo/Makefile.orig	Sat Jul 13 04:19:23 2002
++++ cinelerra-1.1.5/mplexlo/Makefile	Fri Mar 21 00:41:10 2003
+@@ -2,12 +2,12 @@
+ 
+ OBJS = $(OBJDIR)/mplex.o
+ CC = gcc
+-CFLAGS += -I../libmpeg3
++CFLAGS += -I/usr/include/libmpeg3
+ 
+ OUTPUT := $(OBJDIR)/mplexlo
+ 
+ $(OUTPUT): $(OBJS)
+-	$(CC) -o $(OUTPUT) $(OBJS) ../libmpeg3/$(OBJDIR)/libmpeg3.a -lpthread -lm
++	$(CC) -o $(OUTPUT) $(OBJS) -lmpeg3 -lpthread -lm
+ 
+ $(OBJS):
+ 	$(CC) -c $(CFLAGS) $(subst $(OBJDIR)/,, $*.c) -o $*.o
+--- cinelerra-1.1.5/cinelerra/Makefile.orig	Wed Jan 29 07:33:06 2003
++++ cinelerra-1.1.5/cinelerra/Makefile	Fri Mar 21 00:51:55 2003
+@@ -1,7 +1,3 @@
+-DV_DIR := $(shell expr ../quicktime/libdv-0.9.5 )
+-ALSA_DIR := $(shell expr ../alsa-lib* )
+-OGG_DIR := $(shell expr ../quicktime/libogg-1.0 )
+-VORBIS_DIR := $(shell expr ../quicktime/libvorbis-1.0 )
+ include ../global_config
+ 
+ OBJS = \
+@@ -266,13 +262,13 @@
+ endif
+ 
+ STATICLIBS = \
+-	../libavc/$(OBJDIR)/libavc.a \
+-	../quicktime/$(OBJDIR)/libquicktime.a \
++	-lavc1394 -lrom1394 \
++	-lquicktime \
+         $(ESOUNDLIBS) \
+-	../tiff/$(OBJDIR)/libtiff.a \
++	-ltiff \
+ 	../guicast/$(OBJDIR)/libguicast.a \
+-	../libmpeg3/$(OBJDIR)/libmpeg3.a \
+-	../libsndfile/$(OBJDIR)/libsndfile.a
++	-lmpeg3 \
++	-lsndfile -lvorbisfile
+ 
+ LIBS = \
+ 	-L./ \
+@@ -298,21 +294,13 @@
+ 
+ CFLAGS += \
+ 	-I../guicast \
+-	-I../quicktime \
+-	-I$(DV_DIR) \
+-	-I$(OGG_DIR)/include \
+-	-I$(VORBIS_DIR)/include \
+-	-I../quicktime/libdv \
+-	-I../quicktime/libraw1394/src \
+-	-I../audiofile \
+-	-I../libmpeg3 \
+-	-I../libsndfile \
+-	-I../libavc/common \
+-	-I../libavc/libavc1394 \
+-	-I../libavc/librom1394 \
+-	$(ESOUNDCFLAGS) \
+-	$(ALSA_CFLAGS) \
+-	-I../tiff \
++	-I/usr/include/quicktime -I../quicktime \
++	-I/usr/include/libdv \
++	-I/usr/include/ogg \
++	-I/usr/include/vorbis \
++	-I/usr/include/libraw1394 \
++	-I/usr/include/libmpeg3 \
++	-I/usr/include/libavc1394 \
+ 	`glib-config --cflags`
+ 
+ 
+--- cinelerra-1.1.5/global_config.orig	Wed Jan 29 07:32:31 2003
++++ cinelerra-1.1.5/global_config	Fri Mar 21 00:53:25 2003
+@@ -15,7 +15,7 @@
+ 
+ ############################# FINAL DESTINATION FOR INSTALLATION BINARIES
+ 
+-PREFIX = /usr/local
++PREFIX = /usr
+ LIBPREFIX = $(PREFIX)/lib
+ 
+ ########################## COMPILER
+@@ -41,8 +41,8 @@
+ 
+ 
+ ifeq ($(HAVE_ESOUND), yes)
+-ESOUNDCFLAGS = -DHAVE_ESOUND -I../esound
+-ESOUNDLIBS = ../esound/$(OBJDIR)/libesound.a
++ESOUNDCFLAGS = -DHAVE_ESOUND
++ESOUNDLIBS = -lesd
+ endif
+ 
+ 
+--- cinelerra-1.1.5/plugin_config.orig	Mon Jul 29 02:31:12 2002
++++ cinelerra-1.1.5/plugin_config	Fri Mar 21 00:53:41 2003
+@@ -1,6 +1,6 @@
+ CFLAGS += -I../ -I../../cinelerra \
+ 	-I../../guicast \
+-	-I../../quicktime \
++	-I/usr/include/quicktime \
+ 	-I../colors
+ 
+ $(shell echo $(CFLAGS) > ../$(OBJDIR)/c_flags)
+--- cinelerra-1.1.5/plugins/mpeg2enc/Makefile.orig	Sat Aug  3 04:18:42 2002
++++ cinelerra-1.1.5/plugins/mpeg2enc/Makefile	Fri Mar 21 01:35:40 2003
+@@ -1,6 +1,6 @@
+ include ../../global_config
+ CC = gcc
+-CFLAGS += -I../../libmpeg3 -I../../quicktime
++CFLAGS += -I/usr/include/libmpeg3 -I/usr/include/quicktime
+ 
+ 
+ ifeq ($(OBJDIR), i686)
+@@ -48,8 +48,8 @@
+ 	$(OBJDIR)/writepic.o
+ 
+ LIBS = \
+-	../../quicktime/$(OBJDIR)/libquicktime.a \
+-	../../libmpeg3/$(OBJDIR)/libmpeg3.a \
++	-lquicktime \
++	-lmpeg3 \
+ 	-lpthread \
+ 	-lpng \
+ 	-lz \

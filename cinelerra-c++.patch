@@ -1,0 +1,11 @@
+--- cinelerra-1.1.5/cinelerra/tracksedit.C.orig	Sat Dec 14 06:10:45 2002
++++ cinelerra-1.1.5/cinelerra/tracksedit.C	Fri Mar 21 01:23:37 2003
+@@ -745,7 +745,7 @@
+ 	dest_edit->insert_transition(server->title);
+ }
+ 
+-void Tracks::paste_video_transition(PluginServer *server, int first_track = 0)
++void Tracks::paste_video_transition(PluginServer *server, int first_track /* = 0 */)
+ {
+ 	for(Track *current = first; current; current = NEXT)
+ 	{

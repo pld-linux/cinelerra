@@ -1,0 +1,17 @@
+--- cinelerra-1.1.5/plugins/mpeg2enc/global.h.orig	Sat Sep 21 07:07:54 2002
++++ cinelerra-1.1.5/plugins/mpeg2enc/global.h	Fri Mar 21 01:34:37 2003
+@@ -27,12 +27,12 @@
+  *
+  */
+ 
++#include <pthread.h>
++#include <stdint.h>
+ #include "libmpeg3.h"
+ #include "mpeg2enc.h"
+ #include "quicktime.h"
+ 
+-#include <pthread.h>
+-#include <stdint.h>
+ 
+ /* choose between declaration (GLOBAL_ undefined)
+  * and definition (GLOBAL_ defined)

@@ -1,0 +1,169 @@
+--- cinelerra-1.1.5/cinelerra/filesndfile.C.orig	Sat Nov  2 10:06:39 2002
++++ cinelerra-1.1.5/cinelerra/filesndfile.C	Fri Mar 21 01:19:58 2003
+@@ -25,7 +25,7 @@
+ 	SF_INFO fd_config;
+ 	fd_config.format = 0;
+ //printf("FileSndFile::check_sig 1\n");
+-	SNDFILE *fd = sf_open_read(asset->path, &fd_config);
++	SNDFILE *fd = sf_open(asset->path, SFM_READ, &fd_config);
+ //printf("FileSndFile::check_sig 1\n");
+ 
+ 	if(fd)
+@@ -56,30 +56,29 @@
+ 		case BITSLINEAR8:
+ 		case BITSLINEAR16:
+ 		case BITSLINEAR24:
+-			if(asset->format != FILE_PCM)
+-			{
+-				fd_config.format |= SF_FORMAT_PCM;
+-			}
+-			else
++			if(asset->format == FILE_PCM)
+ 			{
+ 				if(asset->byte_order)
+-					fd_config.format |= SF_FORMAT_PCM_LE;
++					fd_config.format |= SF_ENDIAN_LITTLE;
+ 				else
+-					fd_config.format |= SF_FORMAT_PCM_BE;
++					fd_config.format |= SF_ENDIAN_BIG;
+ 			}
+-			fd_config.pcmbitwidth = asset->bits;
+-//printf("FileSndFile::asset_to_format 1 %x %d\n", fd_config.format, fd_config.pcmbitwidth);
++			if(asset->bits == BITSLINEAR8)
++				fd_config.format |= SF_FORMAT_PCM_S8;
++			else if(asset->bits == BITSLINEAR16)
++				fd_config.format |= SF_FORMAT_PCM_16;
++			else
++				fd_config.format |= SF_FORMAT_PCM_24;
++//printf("FileSndFile::asset_to_format 1 %x\n", fd_config.format);
+ 			break;
+ 
+ 		case BITSULAW: 
+ 			fd_config.format |= SF_FORMAT_ULAW; 
+-			fd_config.pcmbitwidth = 16;
+ 			break;
+ 
+ 		case BITSFLOAT: 
+ //printf("FileSndFile::asset_to_format 1\n");
+ 			fd_config.format |= SF_FORMAT_FLOAT; 
+-			fd_config.pcmbitwidth = 16;
+ 			break;
+ 
+ 		case BITS_ADPCM: 
+@@ -87,14 +86,13 @@
+ 				fd_config.format |= SF_FORMAT_MS_ADPCM;
+ 			else
+ 				fd_config.format |= SF_FORMAT_IMA_ADPCM; 
+-			fd_config.pcmbitwidth = 16;
+ 			break;
+ 	}
+ 
+ 	fd_config.seekable = 1;
+ 	fd_config.samplerate = asset->sample_rate;
+ 	fd_config.channels  = asset->channels;
+-//printf("FileSndFile::asset_to_format %x %d %d\n", fd_config.format, fd_config.pcmbitwidth, fd_config.channels);
++//printf("FileSndFile::asset_to_format %x %d\n", fd_config.format, fd_config.channels);
+ }
+ 
+ void FileSndFile::format_to_asset()
+@@ -113,7 +111,6 @@
+ 				break;
+ 			case SF_FORMAT_AIFF: asset->format = FILE_AIFF; break;
+ 			case SF_FORMAT_AU:   asset->format = FILE_AU;   break;
+-			case SF_FORMAT_AULE: asset->format = FILE_AU;   break;
+ 			case SF_FORMAT_RAW:  asset->format = FILE_PCM;  break;
+ 			case SF_FORMAT_PAF:  asset->format = FILE_SND;  break;
+ 			case SF_FORMAT_SVX:  asset->format = FILE_SND;  break;
+@@ -132,17 +129,6 @@
+ 		case SF_FORMAT_MS_ADPCM:
+ 			asset->bits = BITS_ADPCM;
+ 			break;
+-		case SF_FORMAT_PCM:
+-			asset->bits = fd_config.pcmbitwidth;
+-			break;
+-		case SF_FORMAT_PCM_BE:
+-			asset->byte_order = 0;
+-			asset->bits = fd_config.pcmbitwidth;
+-			break;
+-		case SF_FORMAT_PCM_LE:
+-			asset->byte_order = 1;
+-			asset->bits = fd_config.pcmbitwidth;
+-			break;
+ 		case SF_FORMAT_PCM_S8:
+ 			asset->signed_ = 1;
+ 			asset->bits = BITSLINEAR8;
+@@ -151,13 +137,29 @@
+ 			asset->signed_ = 0;
+ 			asset->bits = BITSLINEAR8;
+ 			break;
++		case SF_FORMAT_PCM_16:
++			asset->bits = BITSLINEAR16;
++			break;
++		case SF_FORMAT_PCM_24:
++			asset->bits = BITSLINEAR24;
++			break;
++		case SF_FORMAT_PCM_32:
++			asset->bits = BITSLINEAR32;
++			break;
++	}
++	switch(fd_config.format & SF_FORMAT_ENDMASK) {
++		case SF_ENDIAN_LITTLE:
++			asset->byte_order = 1;
++			break;
++		case SF_ENDIAN_BIG:
++			asset->byte_order = 0;
++			break;
+ 	}
+-
+ 	asset->audio_data = 1;
+-	asset->audio_length = fd_config.samples;
++	asset->audio_length = fd_config.frames;
+ 	asset->sample_rate = fd_config.samplerate;
+ 	asset->channels = fd_config.channels;
+-//printf("FileSndFile::format_to_asset %x %d %d %x\n", fd_config.format & SF_FORMAT_TYPEMASK, fd_config.pcmbitwidth, fd_config.samples, fd_config.format & SF_FORMAT_SUBMASK);
++//printf("FileSndFile::format_to_asset %x %d %x\n", fd_config.format & SF_FORMAT_TYPEMASK, fd_config.frames, fd_config.format & SF_FORMAT_SUBMASK);
+ //asset->dump();
+ }
+ 
+@@ -172,12 +174,12 @@
+ 		if(asset->format == FILE_PCM)
+ 		{
+ 			asset_to_format();
+-			fd = sf_open_read(asset->path, &fd_config);
++			fd = sf_open(asset->path, SFM_READ, &fd_config);
+ 			format_to_asset();
+ 		}
+ 		else
+ 		{
+-			fd = sf_open_read(asset->path, &fd_config);
++			fd = sf_open(asset->path, SFM_READ, &fd_config);
+ // Doesn't calculate the length
+ 			format_to_asset();
+ 		}
+@@ -188,7 +190,7 @@
+ //printf("FileSndFile::open_file 1\n");
+ 		asset_to_format();
+ //printf("FileSndFile::open_file 1\n");
+-		fd = sf_open_write(asset->path, &fd_config);
++		fd = sf_open(asset->path, SFM_WRITE, &fd_config);
+ //printf("FileSndFile::open_file 2 %p\n", fd);
+ 	}
+ 
+@@ -252,7 +254,7 @@
+ 	}
+ 
+ //printf("FileSndFile::read_samples 3\n");
+-	result = !sf_read_double(fd, temp_double, len * asset->channels, 1);
++	result = !sf_read_double(fd, temp_double, len * asset->channels);
+ //printf("FileSndFile::read_samples 4\n");
+ 
+ 	if(result)
+@@ -305,7 +307,7 @@
+ 		}
+ 	}
+ 	
+-	result = !sf_writef_double(fd, temp_double, len, 1);
++	result = !sf_writef_double(fd, temp_double, len);
+ 
+ 	return result;
+ }
