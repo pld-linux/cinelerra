@@ -1,5 +1,5 @@
---- cinelerra-1.1.8/cinelerra/filesndfile.C.orig	2003-10-19 11:51:37.000000000 +0200
-+++ cinelerra-1.1.8/cinelerra/filesndfile.C	2003-11-12 22:54:02.284687776 +0100
+--- cinelerra-1.1.9/cinelerra/filesndfile.C.orig	2003-10-19 11:51:37.000000000 +0200
++++ cinelerra-1.1.9/cinelerra/filesndfile.C	2003-11-12 22:54:02.284687776 +0100
 @@ -34,7 +34,7 @@
  	FILE *fileptr = fopen(asset->path, "r");
  	if(fileptr)
@@ -15,9 +15,9 @@
  			{
 -				fd = sf_open_fd(fileptr, asset->path, SFM_READ, &fd_config, 0);
 +				fd = sf_open_fd(fileno(fileptr), SFM_READ, &fd_config, 0);
+ // Already given by user
  				if(fd) format_to_asset();
  			}
- 		}
 @@ -218,7 +218,7 @@
  			fileptr = fopen(asset->path, "r");
  			if(fileptr)
