@@ -4,7 +4,7 @@ Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl):	Cinelerra - nagrywanie, obróbka i produkcja materia³u audio/video
 Name:		cinelerra
 Version:	1.1.7
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
@@ -13,18 +13,19 @@ Patch0:		%{name}-system-libs.patch
 Patch1:		%{name}-libsndfile1.patch
 Patch2:		%{name}-strip.patch
 Patch3:		%{name}-fontsdir.patch
+Patch4:		%{name}-freetype.patch
 URL:		http://heroinewarrior.com/cinelerra.php3
 BuildRequires:	XFree86-devel
-# it's sick, but it's true - it uses libuuid functions
-BuildRequires:	e2fsprogs-devel
 BuildRequires:	esound-devel
+BuildRequires:	freetype-devel >= 2.1.4
 BuildRequires:	lame-libs-devel >= 3.93.1
 BuildRequires:	libavc1394-devel >= 0.4.0
 BuildRequires:	libmpeg3-devel >= 1.5.0-2
 BuildRequires:	libsndfile-devel >= 1.0.0
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtiff-devel
-BuildRequires:	quicktime4linux-devel >= 1.6.1-2
+BuildRequires:	libuuid-devel
+BuildRequires:	quicktime4linux-devel >= 2.0.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # defaulttheme and microtheme cannot be stripped
@@ -61,6 +62,7 @@ Cinelerra by³a tworzona z my¶l± o zast±pieniu programu Broadcast 2000.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 CFLAGS="%{rpmcflags} -fno-rtti"; export CFLAGS
