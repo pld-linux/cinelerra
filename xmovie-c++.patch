@@ -1,0 +1,11 @@
+--- xmovie-1.9.8/guicast/bctheme.C.orig	Sat Dec 21 04:01:43 2002
++++ xmovie-1.9.8/guicast/bctheme.C	Fri Feb 28 01:37:01 2003
+@@ -86,7 +86,7 @@
+ }
+ 
+ 
+-void BC_Theme::overlay(VFrame *dst, VFrame *src, int in_x1 = -1, int in_x2 = -1)
++void BC_Theme::overlay(VFrame *dst, VFrame *src, int in_x1 /*= -1*/, int in_x2 /*= -1*/)
+ {
+ 	int w;
+ 	int h;
