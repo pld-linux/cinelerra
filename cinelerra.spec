@@ -14,6 +14,7 @@ Patch1:		%{name}-libsndfile1.patch
 Patch2:		%{name}-strip.patch
 Patch3:		%{name}-fontsdir.patch
 Patch4:		%{name}-alpha.patch
+Patch5:		%{name}-locale_h.patch
 URL:		http://heroinewarrior.com/cinelerra.php3
 BuildRequires:	OpenEXR-devel >= 1.2.1
 BuildRequires:	XFree86-devel
@@ -72,6 +73,7 @@ Cinelerra by³a tworzona z my¶l± o zast±pieniu programu Broadcast 2000.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 # assume we have <linux/videodev2.h> (it's in llh)
 echo '#define HAVE_V4L2' > hvirtual_config.h
