@@ -4,7 +4,7 @@ Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl):	Cinelerra - nagrywanie, obróbka i produkcja materia³u audio/video
 Name:		cinelerra
 Version:	1.2.1
-Release:	2
+Release:	3
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
@@ -39,6 +39,8 @@ Requires:	libmpeg3 >= 1.5.3
 Requires:	libsndfile >= 1.0.5
 Requires:	quicktime4linux >= 2.0.4
 Obsoletes:	bcast
+# build system seems to be x86-oriented; anybody to fix it ?
+ExclusiveArch:	%{ix86} amd64
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautostrip	.*/microtheme.plugin
