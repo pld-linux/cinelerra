@@ -1,0 +1,22 @@
+diff -dur cinelerra-1.2.1.orig/guicast/Makefile cinelerra-1.2.1/guicast/Makefile
+--- cinelerra-1.2.1.orig/guicast/Makefile	2004-07-06 06:32:42.000000000 +0200
++++ cinelerra-1.2.1/guicast/Makefile	2004-09-13 11:14:21.672141990 +0200
+@@ -24,6 +24,17 @@
+ BOOTSTRAPFLAGS := -DBOOTSTRAP="\"objcopy -B i386 -I binary -O elf64-x86-64\""
+ endif
+ 
++ifeq ($(OBJDIR), alpha)
++BOOTSTRAPFLAGS := -DBOOTSTRAP="\"objcopy -B i386 -I binary -O elf64-alpha\""
++endif
++
++ifeq ($(OBJDIR), ppc)
++BOOTSTRAPFLAGS := -DBOOTSTRAP="\"objcopy -B i386 -I binary -O elf32-ppc\""
++endif
++
++ifeq ($(OBJDIR), sparc)
++BOOTSTRAPFLAGS := -DBOOTSTRAP="\"objcopy -B i386 -I binary -O elf32-sparc\""
++endif
+ 
+ $(shell sh -c 'if ! test -d $(OBJDIR)\; then mkdir $(OBJDIR)\; fi' )
+ 
+Only in cinelerra-1.2.1/guicast: Makefile~
