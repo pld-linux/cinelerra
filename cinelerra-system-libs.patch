@@ -1,20 +1,24 @@
---- cinelerra-1.1.8/cinelerra/Makefile.orig	2003-11-08 08:15:35.000000000 +0100
-+++ cinelerra-1.1.8/cinelerra/Makefile	2003-11-12 22:15:55.010406320 +0100
-@@ -1,13 +1,4 @@
--DV_DIR := ../quicktime/libdv-0.99
--ALSA_DIR := ../alsa-lib-0.9.0rc2
--OGG_DIR := ../quicktime/libogg-1.0
--VORBIS_DIR := ../quicktime/libvorbis-1.0
--LIBRAW_DIR := ../libraw1394-0.9.0
--TIFF_DIR := ../tiff-v3.5.7
--UUID_DIR := ../uuid
- TOOLAME_DIR := ../toolame-02l
--LAME_DIR := ../quicktime/lame-3.93.1/include
--SNDFILE_DIR := $(shell expr ../libsndfile* )
+--- cinelerra-1.2.0/cinelerra/Makefile.orig	2004-04-06 08:27:21.000000000 +0200
++++ cinelerra-1.2.0/cinelerra/Makefile	2004-06-05 01:28:18.814120072 +0200
+@@ -1,17 +1,6 @@
  include ../global_config
  
+-ALSA_DIR := ../alsa-lib-1.0.2
+-AVC_DIR := ../libavc1394-0.4.1
+-DV_DIR := ../quicktime/libdv-0.99
+-FFMPEG_DIR := $(shell expr ../quicktime/ffmpeg* )
+-LAME_DIR := ../quicktime/lame-3.93.1/include
+-LIBRAW_DIR := ../libraw1394-0.9.0
+-OGG_DIR := ../quicktime/libogg-1.0
+-SNDFILE_DIR := $(shell expr ../libsndfile* )
+-TIFF_DIR := ../tiff-v3.5.7
+ TOOLAME_DIR := ../toolame-02l
+-UUID_DIR := ../uuid
+-VORBIS_DIR := ../quicktime/libvorbis-1.0
+ 
  OBJS = \
-@@ -267,23 +258,17 @@
+ 	$(OBJDIR)/aattachmentpoint.o \
+@@ -279,26 +268,19 @@
  
  
  #ifeq ($(HAVE_AVIFILE), y)
@@ -30,7 +34,7 @@
  endif
  
  STATICLIBS = \
--	../libavc/$(OBJDIR)/libavc.a \
+-	$(AVC_DIR)/$(OBJDIR)/libavc.a \
 -	../quicktime/$(OBJDIR)/libquicktime.a \
          $(ESOUNDLIBS) \
 -	$(TIFF_DIR)/$(OBJDIR)/libtiff.a \
@@ -40,8 +44,11 @@
 -	$(UUID_DIR)/$(OBJDIR)/libuuid.a \
  	../mpeg2enc/$(OBJDIR)/mpeg2enc.a \
  	$(TOOLAME_DIR)/$(OBJDIR)/toolame.a
+-#	../libavc/$(OBJDIR)/libavc.a \
  
-@@ -303,7 +288,13 @@
+ LIBS := \
+ 	-L./ \
+@@ -316,7 +298,13 @@
  
  LIBS += \
  	$(ALSA_LIBS) \
@@ -56,7 +63,7 @@
  	$(GLLIBS) \
  	-lX11 \
  	-lXext \
-@@ -322,22 +313,14 @@
+@@ -335,23 +323,17 @@
  
  CFLAGS += \
  	-I../guicast \
@@ -64,7 +71,7 @@
 -	-I$(DV_DIR) \
 -	-I$(OGG_DIR)/include \
 -	-I$(VORBIS_DIR)/include \
--	-I$(LIBRAW_DIR)/src \
+-	-I$(LIBRAW_DIR)/ \
 -	-I$(TIFF_DIR)/libtiff \
 -	-I$(UUID_DIR) \
 -	-I$(DV_DIR) \
@@ -74,18 +81,20 @@
 +	-I/usr/include/uuid \
  	-I$(TOOLAME_DIR) \
 -	-I$(LAME_DIR) \
+-	-I$(AVC_DIR) \
 -	-I../audiofile \
 -	-I../libmpeg3 \
 -	-I$(SNDFILE_DIR)/src \
--	-I../libavc/common \
--	-I../libavc/libavc1394 \
--	-I../libavc/librom1394 \
 +	-I/usr/include/lame \
 +	-I/usr/include/libmpeg3 \
 +	-I/usr/include/libavc1394 \
  	$(ESOUNDCFLAGS) \
- 	$(ALSA_CFLAGS)
+ 	$(ALSA_CFLAGS) \
+-	-I$(FFMPEG_DIR)/libavcodec
++	-I/usr/include/ffmpeg
  
+ 
+ # Speed up linking with this linking sequence
 --- cinelerra-1.1.8/cinelerra/jpegwrapper.h.orig	2003-10-14 09:54:01.000000000 +0200
 +++ cinelerra-1.1.8/cinelerra/jpegwrapper.h	2003-11-12 22:28:31.358423944 +0100
 @@ -7,7 +7,7 @@
@@ -204,3 +213,32 @@
  	-I../colors \
  	-fPIC
  
+--- cinelerra-1.2.0/cinelerra/audioalsa.h.orig	2003-10-14 09:53:59.000000000 +0200
++++ cinelerra-1.2.0/cinelerra/audioalsa.h	2004-06-05 10:26:45.584744408 +0200
+@@ -5,7 +5,7 @@
+ #include "audiodevice.h"
+ 
+ #ifdef HAVE_ALSA
+-#include "asoundlib.h"
++#include <alsa/asoundlib.h>
+ 
+ class AudioALSA : public AudioLowLevel
+ {
+--- cinelerra-1.2.0/cinelerra/avc1394control.h.orig	2004-04-09 09:22:12.000000000 +0200
++++ cinelerra-1.2.0/cinelerra/avc1394control.h	2004-06-05 10:27:24.377846960 +0200
+@@ -2,11 +2,11 @@
+ #define _AVC1394Control_H
+ 
+ 
+-#include "librom1394/rom1394.h"
+-#include "libavc1394/avc1394.h"
+-#include "libavc1394/avc1394_vcr.h"
++#include <libavc1394/rom1394.h>
++#include <libavc1394/avc1394.h>
++#include <libavc1394/avc1394_vcr.h>
+ #include "mutex.inc"
+-#include "libraw1394/raw1394.h"
++#include <libraw1394/raw1394.h>
+ #include <sys/types.h>
+ #include <stdio.h>
+ #include <errno.h>

@@ -10,17 +10,6 @@
  
  $(shell sh -c 'if ! test -d $(OBJDIR)\; then mkdir $(OBJDIR)\; fi' )
  
---- cinelerra-1.1.7/cinelerra/fileformat.C.orig	2002-07-15 03:09:16.000000000 +0000
-+++ cinelerra-1.1.7/cinelerra/fileformat.C	2003-11-10 11:04:39.000000000 +0000
-@@ -93,7 +93,7 @@
- 
- FileFormatChannels::FileFormatChannels(int x, int y, FileFormat *fwindow, char *text)
-  : BC_TumbleTextBox(fwindow, 
-- 	atol(text), 
-+ 	atoi(text), 
- 	1, 
- 	MAXCHANNELS, 
- 	x, 
 --- cinelerra-1.1.7/cinelerra/Makefile.orig	2003-11-10 11:08:12.000000000 +0000
 +++ cinelerra-1.1.7/cinelerra/Makefile	2003-11-10 11:44:07.000000000 +0000
 @@ -323,7 +323,7 @@
