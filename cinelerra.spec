@@ -40,7 +40,7 @@ Requires:	libsndfile >= 1.0.5
 Requires:	quicktime4linux >= 2.0.4
 Obsoletes:	bcast
 # build system seems to be x86-oriented; anybody to fix it ?
-ExclusiveArch:	%{ix86} amd64
+ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautostrip	.*/microtheme.plugin
