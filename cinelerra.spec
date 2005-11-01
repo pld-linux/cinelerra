@@ -1,43 +1,49 @@
 # TODO: build guicast as separate, shared library to use in
-#       xmovie, mix2000 and cinelerra
+#       xmovie, mix2005 and cinelerra
 Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl):	Cinelerra - nagrywanie, obróbka i produkcja materia³u audio/video
 Name:		cinelerra
-Version:	1.2.1
-Release:	4
+Version:	2.0
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
-# Source0-md5:	ee230582f2bc7e1e35fc36f92469a78e
+# Source0-md5:	2beb3f1df203cbdc8918f06ea573324c
 Patch0:		%{name}-system-libs.patch
-Patch1:		%{name}-libsndfile1.patch
-Patch2:		%{name}-strip.patch
-Patch3:		%{name}-fontsdir.patch
-Patch4:		%{name}-alpha.patch
-Patch5:		%{name}-locale_h.patch
-Patch6:		%{name}-guicast_bootstrap.patch
+Patch1:		%{name}-strip.patch
+Patch2:		%{name}-fontsdir.patch
+Patch3:		%{name}-locale_h.patch
+Patch4:		%{name}-guicast_bootstrap.patch
 URL:		http://heroinewarrior.com/cinelerra.php3
 BuildRequires:	OpenEXR-devel >= 1.2.1
 BuildRequires:	XFree86-devel
+BuildRequires:	alsa-lib-devel >= 1.0.8
 BuildRequires:	esound-devel
 BuildRequires:	freetype-devel >= 2.1.4
 BuildRequires:	lame-libs-devel >= 3.93.1
-BuildRequires:	libavc1394-devel >= 0.4.1
-BuildRequires:	libmpeg3-devel >= 1.5.3
-BuildRequires:	libsndfile-devel >= 1.0.5
+BuildRequires:	libavc1394-devel >= 0.5.1
+BuildRequires:	libiec61883-devel >= 1.0.0
+BuildRequires:	libmpeg3-devel >= 1.6
+BuildRequires:	libraw1394-devel >= 1.2.0
+BuildRequires:	libsndfile-devel >= 1.0.11
 BuildRequires:	libstdc++-devel >= 5:3.2.2
+BuildRequires:	libtheora-devel >= 1.0-0.alpha4
 BuildRequires:	libtiff-devel >= 3.5.7
 BuildRequires:	libuuid-devel
 %ifarch %{ix86}
 BuildRequires:	nasm
 %endif
-BuildRequires:	quicktime4linux-devel >= 2.0.4
+BuildRequires:	quicktime4linux-devel >= 2.1
 Requires:	OpenEXR-devel >= 1.2.1
+Requires:	alsa-lib >= 1.0.8
 Requires:	freetype >= 2.1.4
-Requires:	libavc1394 >= 0.4.1
-Requires:	libmpeg3 >= 1.5.3
-Requires:	libsndfile >= 1.0.5
-Requires:	quicktime4linux >= 2.0.4
+Requires:	libavc1394 >= 0.5.1
+Requires:	libiec61883 >= 1.0.0
+Requires:	libmpeg3 >= 1.6
+Requires:	libraw1394 >= 1.2.0
+Requires:	libsndfile >= 1.0.11
+Requires:	libtheora >= 1.0-0.alpha4
+Requires:	quicktime4linux >= 2.1
 Obsoletes:	bcast
 # build system seems to be x86-oriented; anybody to fix it ?
 ExclusiveArch:	%{ix86} %{x8664}
@@ -76,20 +82,17 @@ Cinelerra by³a tworzona z my¶l± o zast±pieniu programu Broadcast 2000.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
-%patch6 -p1
 
 # assume we have <linux/videodev2.h> (it's in llh)
-echo '#define HAVE_V4L2' > hvirtual_config.h
+echo '#define HAVE_VIDEO4LINUX2' > hvirtual_config.h
+echo '#define PACKAGE_STRING "cinelerra"' >> hvirtual_config.h
 
-# Linux ieee1394 ioctls description - no longer provided by libdv
-ln -sf ../$(echo quicktime/libdv-*/libdv/dv1394.h) cinelerra
+rm -rf OpenEXR-* alsa-lib-* audiofile esound fftw-* freetype-* libavc1394-* libiec61883-* libmpeg3 libraw1394-* libsndfile-* libtheora-* mjpegtools-* quicktime tiff-* uuid
 
 %build
-CFLAGS="%{rpmcflags} -fno-rtti"; export CFLAGS
+CFLAGS="%{rpmcflags}"; export CFLAGS
 %{__make} -f build/Makefile.toolame
 %{__make} -C mpeg2enc
-%{__make} -C mplexhi
 %{__make} -C mplexlo
 %{__make} -C guicast
 # cinelerra, defaulttheme and microtheme are stripped before running "bootstrap"
