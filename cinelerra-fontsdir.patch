@@ -1,11 +1,22 @@
---- cinelerra-1.1.9/plugins/titler/title.C.orig	2003-07-29 06:20:35.000000000 +0200
-+++ cinelerra-1.1.9/plugins/titler/title.C	2003-08-16 23:32:42.547252184 +0200
-@@ -27,7 +27,7 @@
+--- cinelerra-2.0/plugins/titler/title.C.orig	2005-05-12 10:41:22.000000000 +0200
++++ cinelerra-2.0/plugins/titler/title.C	2005-11-01 14:03:10.117615280 +0100
+@@ -26,7 +26,7 @@
+ #include <byteswap.h>
+ #include <iconv.h>
  
- #define ZERO (1.0 / 64.0)
- 
--#define FONT_SEARCHPATH "/usr/lib/cinelerra/fonts"
+-#define FONT_SEARCHPATH PLUGIN_DIR "/fonts"
 +#define FONT_SEARCHPATH "/usr/share/fonts"
- //#define FONT_SEARCHPATH "/usr/X11R6/lib/X11/fonts"
+ 
+ REGISTER_PLUGIN(TitleMain)
+ 
+--- cinelerra-2.0/plugins/titler/Makefile.orig	2005-11-01 13:51:28.423289000 +0100
++++ cinelerra-2.0/plugins/titler/Makefile	2005-11-01 14:03:27.131028848 +0100
+@@ -21,8 +21,6 @@
+ 
+ install:
+ 	cp $(OUTPUT_PLUGIN) $(PLUGINDIR)
+-	mkdir -p $(PLUGINDIR)/fonts
+-	cp fonts/* $(PLUGINDIR)/fonts
+ 
  
  

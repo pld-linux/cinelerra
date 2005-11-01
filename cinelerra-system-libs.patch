@@ -1,30 +1,54 @@
---- cinelerra-1.2.1/cinelerra/Makefile.orig	2004-07-12 01:07:17.000000000 +0200
-+++ cinelerra-1.2.1/cinelerra/Makefile	2004-08-22 20:29:36.344692752 +0200
-@@ -1,18 +1,6 @@
+--- cinelerra-2.0/cinelerra/Makefile.orig	2005-09-07 23:25:21.000000000 +0200
++++ cinelerra-2.0/cinelerra/Makefile	2005-11-01 13:25:17.219148368 +0100
+@@ -1,27 +1,27 @@
  include ../global_config
  
--ALSA_DIR := ../alsa-lib-1.0.2
--AVC_DIR := ../libavc1394-0.4.1
--DV_DIR := ../quicktime/libdv-0.99
+-ALSA_DIR := ../alsa-lib-1.0.8
+-AVC_DIR := $(shell expr ../libavc1394* )
+-DV_DIR := ../quicktime/libdv-0.104
+-EXR_DIR := ../OpenEXR-1.2.1/
 -FFMPEG_DIR := $(shell expr ../quicktime/ffmpeg* )
+-JPEG_DIR := $(shell expr ../quicktime/jpeg-mmx* )
 -LAME_DIR := ../quicktime/lame-3.93.1/include
--LIBRAW_DIR := ../libraw1394-0.9.0
--OGG_DIR := ../quicktime/libogg-1.0
+-LIBIEC_DIR := $(shell expr ../libiec61883* )
+-LIBRAW_DIR := $(shell expr ../libraw1394* )
+-OGG_DIR := $(shell expr ../quicktime/libogg* )
 -SNDFILE_DIR := $(shell expr ../libsndfile* )
+-THEORA_DIR := $(shell expr ../libtheora* )
 -TIFF_DIR := ../tiff-v3.5.7
++#ALSA_DIR := ../alsa-lib-1.0.8
++#AVC_DIR := $(shell expr ../libavc1394* )
++#DV_DIR := ../quicktime/libdv-0.104
++#EXR_DIR := ../OpenEXR-1.2.1/
++#FFMPEG_DIR := $(shell expr ../quicktime/ffmpeg* )
++#JPEG_DIR := $(shell expr ../quicktime/jpeg-mmx* )
++#LAME_DIR := ../quicktime/lame-3.93.1/include
++#LIBIEC_DIR := $(shell expr ../libiec61883* )
++#LIBRAW_DIR := $(shell expr ../libraw1394* )
++#OGG_DIR := $(shell expr ../quicktime/libogg* )
++#SNDFILE_DIR := $(shell expr ../libsndfile* )
++#THEORA_DIR := $(shell expr ../libtheora* )
++#TIFF_DIR := ../tiff-v3.5.7
  TOOLAME_DIR := ../toolame-02l
 -UUID_DIR := ../uuid
--VORBIS_DIR := ../quicktime/libvorbis-1.0
--EXR_DIR := ../OpenEXR-1.2.1/
+-VORBIS_DIR := $(shell expr ../quicktime/libvorbis* )
++#UUID_DIR := ../uuid
++#VORBIS_DIR := $(shell expr ../quicktime/libvorbis* )
+ 
+-AVC_LIB := $(AVC_DIR)/libavc1394/.libs/libavc1394.a $(AVC_DIR)/librom1394/.libs/librom1394.a
+-RAW_LIB := $(LIBRAW_DIR)/src/.libs/libraw1394.a
+-IEC_LIB := $(LIBIEC_DIR)/src/.libs/libiec61883.a
+-SNDFILE_LIB := $(SNDFILE_DIR)/src/.libs/libsndfile.a
+-THEORA_LIB := $(THEORA_DIR)/lib/.libs/libtheora.a
++AVC_LIB := -lavc1394 -lrom1394
++RAW_LIB := -lraw1394
++IEC_LIB := -liec61883
++SNDFILE_LIB := -lsndfile
++THEORA_LIB := -ltheora
  
  OBJS = \
  	$(OBJDIR)/aattachmentpoint.o \
-@@ -285,24 +273,17 @@
- 
- 
- #ifeq ($(HAVE_AVIFILE), y)
--AVIFILE_DIR := $(shell expr ../avifile* )
-+#AVIFILE_DIR := $(shell expr ../avifile* )
+@@ -305,29 +305,17 @@
  #endif
  
  ifeq ($(HAVE_ALSA), y)
@@ -34,87 +58,97 @@
 +ALSA_LIBS := -lasound
  endif
  
+ 
+ 
  STATICLIBS = \
--	$(AVC_DIR)/$(OBJDIR)/libavc.a \
+-	$(ALSA_LIBS) \
+-	$(AVC_LIB) \
+-	$(RAW_LIB) \
+-	$(IEC_LIB) \
 -	../quicktime/$(OBJDIR)/libquicktime.a \
-         $(ESOUNDLIBS) \
+-        $(ESOUNDLIBS) \
 -	$(EXR_DIR)/$(OBJDIR)/libexr.a \
 -	$(TIFF_DIR)/$(OBJDIR)/libtiff.a \
  	../guicast/$(OBJDIR)/libguicast.a \
 -	../libmpeg3/$(OBJDIR)/libmpeg3.a \
--	$(SNDFILE_DIR)/$(OBJDIR)/libsndfile.a \
+-	$(SNDFILE_LIB) \
 -	$(UUID_DIR)/$(OBJDIR)/libuuid.a \
  	../mpeg2enc/$(OBJDIR)/mpeg2enc.a \
  	$(TOOLAME_DIR)/$(OBJDIR)/toolame.a \
- 	$(THEME_DATA)
-@@ -323,7 +304,14 @@
+-	$(THEME_DATA) \
+-	$(THEORA_LIB)
++	$(THEME_DATA)
+ 
+ LIBS := \
+ 	-L./ \
+@@ -344,6 +332,18 @@
+ 
  
  LIBS += \
- 	$(ALSA_LIBS) \
--	$(LIBRAW_DIR)/$(OBJDIR)/libraw1394.a \
-+	-lavc1394 -lrom1394 \
++	$(ALSA_LIBS) \
++	$(AVC_LIB) \
++	$(RAW_LIB) \
++	$(IEC_LIB) \
 +	-lquicktime -lvorbisfile \
++        $(ESOUNDLIBS) \
 +	-lIlmImf -lImath -lHalf -lIex \
 +	-ltiff \
 +	-lmpeg3 \
-+	-lsndfile \
++	$(SNDFILE_LIB) \
 +	-luuid \
-+	-lraw1394 \
++	$(THEORA_LIB) \
  	$(GLLIBS) \
  	-lX11 \
  	-lXext \
-@@ -342,23 +330,17 @@
+@@ -361,29 +361,22 @@
  
  CFLAGS += \
  	-I../guicast \
 -	-I../quicktime \
+-	-I$(JPEG_DIR) \
 -	-I$(DV_DIR) \
 -	-I$(OGG_DIR)/include \
 -	-I$(VORBIS_DIR)/include \
 -	-I$(LIBRAW_DIR)/ \
+-	-I$(AVC_DIR) \
+-	-I$(LIBIEC_DIR)/src/ \
 -	-I$(TIFF_DIR)/libtiff \
 -	-I$(UUID_DIR) \
--	-I$(DV_DIR) \
 +	-I/usr/include/quicktime \
 +	-I/usr/include/libdv \
 +	-I/usr/include/libraw1394 \
++	-I/usr/include/libiec61883 \
 +	-I/usr/include/uuid \
  	-I$(TOOLAME_DIR) \
 -	-I$(LAME_DIR) \
--	-I$(AVC_DIR) \
 -	-I../audiofile \
 -	-I../libmpeg3 \
 -	-I$(SNDFILE_DIR)/src \
 +	-I/usr/include/lame \
 +	-I/usr/include/libmpeg3 \
-+	-I/usr/include/libavc1394 \
  	$(ESOUNDCFLAGS) \
  	$(ALSA_CFLAGS) \
--	-I$(FFMPEG_DIR)/libavcodec
-+	-I/usr/include/ffmpeg
+-	-I$(FFMPEG_DIR)/libavcodec \
+-	-I$(THEORA_DIR)/include
++	-I/usr/include/ffmpeg \
++	-I/usr/include/theora
  
  
  # Speed up linking with this linking sequence
-@@ -463,7 +445,7 @@
+-ifeq ($(OBJDIR), alpha)
++ifeq ($(OBJDIR), alpha-ccc)
+ 
+ 
+ 
+@@ -489,7 +482,7 @@
  
  $(FILEEXR): fileexr.C
  	@echo C++ $*.o
 -	@$(CC) -c `cat $(OBJDIR)/c_flags` -I$(EXR_DIR)IlmImf -I$(EXR_DIR)Imath -I$(EXR_DIR)Iex -I$(EXR_DIR)Half $(subst $(OBJDIR)/,, $*.C) -o $*.o
 +	@$(CC) -c `cat $(OBJDIR)/c_flags` -I/usr/include/OpenEXR $(subst $(OBJDIR)/,, $*.C) -o $*.o
  
- $(THEME_DATA):
- 	cd $(OBJDIR) && \
---- cinelerra-1.1.8/cinelerra/jpegwrapper.h.orig	2003-10-14 09:54:01.000000000 +0200
-+++ cinelerra-1.1.8/cinelerra/jpegwrapper.h	2003-11-12 22:28:31.358423944 +0100
-@@ -7,7 +7,7 @@
- extern "C" {
- #endif
- 
--#include "jpeg/jpeglib.h"
-+#include <jpeglib.h>
- 
- #ifdef __cplusplus
- }
+ $(DCRAW): dcraw.c
+ 	@echo CC $*.o
 --- cinelerra-1.1.8/mpeg2enc/Makefile.orig	2003-10-14 09:54:43.000000000 +0200
 +++ cinelerra-1.1.8/mpeg2enc/Makefile	2003-11-12 22:23:56.387225920 +0100
 @@ -1,6 +1,6 @@
@@ -153,8 +187,8 @@
  
  $(OBJS):
  	$(CC) -c $(CFLAGS) $(subst $(OBJDIR)/,, $*.c) -o $*.o
---- cinelerra-1.1.8/plugins/titler/Makefile.orig	2003-10-24 05:22:18.000000000 +0200
-+++ cinelerra-1.1.8/plugins/titler/Makefile	2003-11-12 22:28:16.244721576 +0100
+--- cinelerra-2.0/plugins/titler/Makefile.orig	2005-05-29 02:01:50.000000000 +0200
++++ cinelerra-2.0/plugins/titler/Makefile	2005-11-01 13:29:05.682416672 +0100
 @@ -8,19 +8,18 @@
  
  
@@ -176,9 +210,9 @@
  
 -inst:
 +install:
- 	cp $(OUTPUT_PLUGIN) /usr/lib/cinelerra
- 	cp -a fonts /usr/lib/cinelerra
- 
+ 	cp $(OUTPUT_PLUGIN) $(PLUGINDIR)
+ 	mkdir -p $(PLUGINDIR)/fonts
+ 	cp fonts/* $(PLUGINDIR)/fonts
 --- cinelerra-1.1.8/global_config.orig	2003-10-29 10:05:08.000000000 +0100
 +++ cinelerra-1.1.8/global_config	2003-11-12 22:22:09.103535520 +0100
 @@ -24,7 +24,7 @@
@@ -233,12 +267,26 @@
  
  class AudioALSA : public AudioLowLevel
  {
---- cinelerra-1.2.0/cinelerra/avc1394control.h.orig	2004-04-09 09:22:12.000000000 +0200
-+++ cinelerra-1.2.0/cinelerra/avc1394control.h	2004-06-05 10:27:24.377846960 +0200
-@@ -2,11 +2,11 @@
- #define _AVC1394Control_H
+--- cinelerra-2.0/guicast/Makefile.orig	2005-11-01 14:30:52.865839000 +0100
++++ cinelerra-2.0/guicast/Makefile	2005-11-01 14:41:01.161364152 +0100
+@@ -2,9 +2,9 @@
+ 
+ # Need the freetype include that matches the X server for Xft rendering
+ #FREETYPE_DIR := ..//usr/X11R6/include/freetype2
+-FREETYPE_DIR := $(shell expr ../freetype*/include )
++#FREETYPE_DIR := $(shell expr ../freetype*/include )
+ 
+-CFLAGS += -I../quicktime -I$(FREETYPE_DIR)
++CFLAGS += -I/usr/include/quicktime -I/usr/include/freetype2
+ 
+ # must only define here so applications using libpng don't see any of the XFT
+ # includes at all.  They use a conflicting setjmp.
+--- cinelerra-2.0/cinelerra/avc1394control.h.orig	2005-09-11 22:13:22.000000000 +0200
++++ cinelerra-2.0/cinelerra/avc1394control.h	2005-11-01 16:49:01.785731768 +0100
+@@ -3,11 +3,11 @@
  
  
+ #include "bcwindowbase.inc"
 -#include "librom1394/rom1394.h"
 -#include "libavc1394/avc1394.h"
 -#include "libavc1394/avc1394_vcr.h"
@@ -251,25 +299,14 @@
  #include <sys/types.h>
  #include <stdio.h>
  #include <errno.h>
---- cinelerra-1.2.1/cinelerra/device1394input.h.orig	2004-07-06 06:32:42.000000000 +0200
-+++ cinelerra-1.2.1/cinelerra/device1394input.h	2004-08-22 21:26:29.328840296 +0200
-@@ -7,7 +7,7 @@
+--- cinelerra-2.0/cinelerra/fileogg.h.orig	2005-09-07 23:25:21.000000000 +0200
++++ cinelerra-2.0/cinelerra/fileogg.h	2005-11-01 17:03:29.505818264 +0100
+@@ -1,7 +1,7 @@
+ #ifndef FILEOGG_H
+ #define FILEOGG_H
  
- #include "condition.inc"
- #include "libdv.h"
--#include "libdv/dv1394.h"
-+#include "dv1394.h"
- #include "mutex.inc"
- #include "libraw1394/raw1394.h"
- #include "thread.h"
---- cinelerra-1.2.1/cinelerra/device1394output.h.orig	2004-04-13 00:52:55.000000000 +0200
-+++ cinelerra-1.2.1/cinelerra/device1394output.h	2004-08-22 21:23:11.293946176 +0200
-@@ -8,7 +8,7 @@
- #include "audiodevice.inc"
- #include "condition.inc"
- #include "libdv.h"
--#include "libdv/dv1394.h"
-+#include "dv1394.h"
- #include "ieee1394-ioctl.h"
- #include "mutex.inc"
- #include "thread.h"
+-#include "../config.h"
++#include "../hvirtual_config.h"
+ #include "filebase.h"
+ #include "file.inc"
+ 
