@@ -246,6 +246,15 @@
  
  ifeq ($(HAVE_OSS), y)
  CFLAGS += -DHAVE_OSS
+@@ -79,7 +79,7 @@
+ CFLAGS += $(ALSA_CFLAGS)
+ endif
+ 
+-ifeq ($(OBJDIR), alpha)
++ifeq ($(OBJDIR), alpha-ccc)
+ CXXREPOSITORY = cxx_repository/*.o
+ endif
+ 
 --- cinelerra-1.1.8/plugin_config.orig	2003-10-14 09:53:58.000000000 +0200
 +++ cinelerra-1.1.8/plugin_config	2003-11-12 22:22:42.189505688 +0100
 @@ -1,6 +1,6 @@
