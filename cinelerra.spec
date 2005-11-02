@@ -45,8 +45,6 @@ Requires:	libsndfile >= 1.0.11
 Requires:	libtheora >= 1.0-0.alpha4
 Requires:	quicktime4linux >= 2.1
 Obsoletes:	bcast
-# build system seems to be x86-oriented; anybody to fix it ?
-ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautostrip	.*/microtheme.plugin
