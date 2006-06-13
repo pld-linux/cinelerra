@@ -1,6 +1,6 @@
-diff -dur cinelerra-1.2.1.orig/guicast/Makefile cinelerra-1.2.1/guicast/Makefile
---- cinelerra-1.2.1.orig/guicast/Makefile	2004-07-06 06:32:42.000000000 +0200
-+++ cinelerra-1.2.1/guicast/Makefile	2004-09-13 11:14:21.672141990 +0200
+diff -dur cinelerra-2.0.orig/guicast/Makefile cinelerra-2.0/guicast/Makefile
+--- cinelerra-2.0.orig/guicast/Makefile	2004-07-06 06:32:42.000000000 +0200
++++ cinelerra-2.0/guicast/Makefile	2004-09-13 11:14:21.672141990 +0200
 @@ -24,6 +24,17 @@
  BOOTSTRAPFLAGS := -DBOOTSTRAP="\"objcopy -B i386 -I binary -O elf64-x86-64\""
  endif
@@ -18,4 +18,25 @@ diff -dur cinelerra-1.2.1.orig/guicast/Makefile cinelerra-1.2.1/guicast/Makefile
 +endif
  
  $(shell sh -c 'if ! test -d $(OBJDIR)\; then mkdir $(OBJDIR)\; fi' )
+ 
+diff -dur cinelerra-2.0.orig/guicast/bootstrap.c cinelerra-2.0/guicast/bootstrap.c
+--- cinelerra-2.0.orig/guicast/bootstrap.c	2005-04-20 20:15:14.000000000 +0000
++++ cinelerra-2.0/guicast/bootstrap.c	2006-06-13 18:16:44.413604791 +0000
+@@ -41,7 +41,7 @@
+ 
+ 	*buffer_size += strlen(string) + 1;
+ 	
+-	*(int*)(buffer + *buffer_size) = data_offset;
++	memcpy((int*)(buffer + *buffer_size), data_offset, sizeof(int));
+ 	*buffer_size += sizeof(int);
+ }
+ 
+@@ -152,7 +152,7 @@
+ 
+ // Run system command on it
+ 	sprintf(system_command, "%s %s %s", BOOTSTRAP, temp_path, argv[1]);
+-	system(system_command);
++	return system(system_command);
+ }
+ 
  
