@@ -27,7 +27,7 @@ diff -dur cinelerra-2.0.orig/guicast/bootstrap.c cinelerra-2.0/guicast/bootstrap
  	*buffer_size += strlen(string) + 1;
  	
 -	*(int*)(buffer + *buffer_size) = data_offset;
-+	memcpy((int*)(buffer + *buffer_size), data_offset, sizeof(int));
++	memcpy((int*)(buffer + *buffer_size), &data_offset, sizeof(int));
  	*buffer_size += sizeof(int);
  }
  
