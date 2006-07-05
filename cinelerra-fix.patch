@@ -1,0 +1,10 @@
+--- cinelerra-2.1/cinelerra/dvbtune.C.orig	2006-02-28 05:41:15.000000000 +0100
++++ cinelerra-2.1/cinelerra/dvbtune.C	2006-07-05 11:53:08.114440000 +0200
+@@ -1,5 +1,5 @@
+-#include "../../guicast/bcwindowbase.inc"
+-#include "../../guicast/clip.h"
++#include "../guicast/bcwindowbase.inc"
++#include "../guicast/clip.h"
+ #include "condition.h"
+ #include "devicedvbinput.inc"
+ #include "dvbtune.h"
