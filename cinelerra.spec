@@ -8,17 +8,18 @@
 Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl):	Cinelerra - nagrywanie, obróbka i produkcja materia³u audio/video
 Name:		cinelerra
-Version:	2.0
-Release:	2
+Version:	2.1
+Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
-# Source0-md5:	2beb3f1df203cbdc8918f06ea573324c
+# Source0-md5:	0f0523ef1aa94efb5152dcc494009b56
 Patch0:		%{name}-system-libs.patch
 Patch1:		%{name}-strip.patch
 Patch2:		%{name}-fontsdir.patch
 Patch3:		%{name}-locale_h.patch
 Patch4:		%{name}-guicast_bootstrap.patch
+Patch5:		%{name}-fix.patch
 URL:		http://heroinewarrior.com/cinelerra.php3
 BuildRequires:	OpenEXR-devel >= 1.2.1
 BuildRequires:	XFree86-devel
@@ -28,7 +29,7 @@ BuildRequires:	freetype-devel >= 2.1.4
 BuildRequires:	lame-libs-devel >= 3.93.1
 BuildRequires:	libavc1394-devel >= 0.5.1
 BuildRequires:	libiec61883-devel >= 1.0.0
-BuildRequires:	libmpeg3-devel >= 1.6
+BuildRequires:	libmpeg3-devel >= 1.7
 BuildRequires:	libraw1394-devel >= 1.2.0
 BuildRequires:	libsndfile-devel >= 1.0.11
 BuildRequires:	libstdc++-devel >= 5:3.2.2
@@ -38,17 +39,17 @@ BuildRequires:	libuuid-devel
 %ifarch %{ix86}
 BuildRequires:	nasm
 %endif
-BuildRequires:	quicktime4linux-devel >= 2.1
+BuildRequires:	quicktime4linux-devel >= 2.2
 Requires:	OpenEXR-devel >= 1.2.1
 Requires:	alsa-lib >= 1.0.8
 Requires:	freetype >= 2.1.4
 Requires:	libavc1394 >= 0.5.1
 Requires:	libiec61883 >= 1.0.0
-Requires:	libmpeg3 >= 1.6
+Requires:	libmpeg3 >= 1.7
 Requires:	libraw1394 >= 1.2.0
 Requires:	libsndfile >= 1.0.11
 Requires:	libtheora >= 1.0-0.alpha4
-Requires:	quicktime4linux >= 2.1
+Requires:	quicktime4linux >= 2.2
 Obsoletes:	bcast
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -85,6 +86,7 @@ Cinelerra by³a tworzona z my¶l± o zast±pieniu programu Broadcast 2000.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 # assume we have <linux/videodev2.h> (it's in llh)
 echo '#define HAVE_VIDEO4LINUX2' > hvirtual_config.h
