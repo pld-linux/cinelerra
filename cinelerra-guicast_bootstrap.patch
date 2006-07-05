@@ -19,10 +19,9 @@ diff -dur cinelerra-2.0.orig/guicast/Makefile cinelerra-2.0/guicast/Makefile
  
  $(shell sh -c 'if ! test -d $(OBJDIR)\; then mkdir $(OBJDIR)\; fi' )
  
-diff -dur cinelerra-2.0.orig/guicast/bootstrap.c cinelerra-2.0/guicast/bootstrap.c
---- cinelerra-2.0.orig/guicast/bootstrap.c	2005-04-20 20:15:14.000000000 +0000
-+++ cinelerra-2.0/guicast/bootstrap.c	2006-06-13 18:16:44.413604791 +0000
-@@ -41,7 +41,7 @@
+--- cinelerra-2.1/guicast/bootstrap.c.orig	2006-03-31 07:51:03.000000000 +0200
++++ cinelerra-2.1/guicast/bootstrap.c	2006-07-05 11:35:14.014440000 +0200
+@@ -54,7 +54,7 @@
  
  	*buffer_size += strlen(string) + 1;
  	
@@ -31,10 +30,10 @@ diff -dur cinelerra-2.0.orig/guicast/bootstrap.c cinelerra-2.0/guicast/bootstrap
  	*buffer_size += sizeof(int);
  }
  
-@@ -152,7 +152,7 @@
+@@ -195,7 +195,7 @@
  
  // Run system command on it
- 	sprintf(system_command, "%s %s %s", BOOTSTRAP, temp_path, argv[1]);
+ 	sprintf(system_command, "%s %s %s", BOOTSTRAP, temp_path, out_path);
 -	system(system_command);
 +	return system(system_command);
  }

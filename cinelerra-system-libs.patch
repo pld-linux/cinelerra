@@ -1,9 +1,8 @@
---- cinelerra-2.0/cinelerra/Makefile.orig	2005-09-07 23:25:21.000000000 +0200
-+++ cinelerra-2.0/cinelerra/Makefile	2005-11-01 13:25:17.219148368 +0100
-@@ -1,27 +1,27 @@
+--- cinelerra-2.1/cinelerra/Makefile.orig	2006-06-01 06:12:23.000000000 +0200
++++ cinelerra-2.1/cinelerra/Makefile	2006-07-05 11:30:45.264440000 +0200
+@@ -1,27 +1,13 @@
  include ../global_config
  
--ALSA_DIR := ../alsa-lib-1.0.8
 -AVC_DIR := $(shell expr ../libavc1394* )
 -DV_DIR := ../quicktime/libdv-0.104
 -EXR_DIR := ../OpenEXR-1.2.1/
@@ -16,52 +15,29 @@
 -SNDFILE_DIR := $(shell expr ../libsndfile* )
 -THEORA_DIR := $(shell expr ../libtheora* )
 -TIFF_DIR := ../tiff-v3.5.7
-+#ALSA_DIR := ../alsa-lib-1.0.8
-+#AVC_DIR := $(shell expr ../libavc1394* )
-+#DV_DIR := ../quicktime/libdv-0.104
-+#EXR_DIR := ../OpenEXR-1.2.1/
-+#FFMPEG_DIR := $(shell expr ../quicktime/ffmpeg* )
-+#JPEG_DIR := $(shell expr ../quicktime/jpeg-mmx* )
-+#LAME_DIR := ../quicktime/lame-3.93.1/include
-+#LIBIEC_DIR := $(shell expr ../libiec61883* )
-+#LIBRAW_DIR := $(shell expr ../libraw1394* )
-+#OGG_DIR := $(shell expr ../quicktime/libogg* )
-+#SNDFILE_DIR := $(shell expr ../libsndfile* )
-+#THEORA_DIR := $(shell expr ../libtheora* )
-+#TIFF_DIR := ../tiff-v3.5.7
  TOOLAME_DIR := ../toolame-02l
 -UUID_DIR := ../uuid
 -VORBIS_DIR := $(shell expr ../quicktime/libvorbis* )
-+#UUID_DIR := ../uuid
-+#VORBIS_DIR := $(shell expr ../quicktime/libvorbis* )
- 
+-
 -AVC_LIB := $(AVC_DIR)/libavc1394/.libs/libavc1394.a $(AVC_DIR)/librom1394/.libs/librom1394.a
 -RAW_LIB := $(LIBRAW_DIR)/src/.libs/libraw1394.a
 -IEC_LIB := $(LIBIEC_DIR)/src/.libs/libiec61883.a
 -SNDFILE_LIB := $(SNDFILE_DIR)/src/.libs/libsndfile.a
 -THEORA_LIB := $(THEORA_DIR)/lib/.libs/libtheora.a
+ 
 +AVC_LIB := -lavc1394 -lrom1394
 +RAW_LIB := -lraw1394
 +IEC_LIB := -liec61883
 +SNDFILE_LIB := -lsndfile
 +THEORA_LIB := -ltheora
- 
++  
  OBJS = \
  	$(OBJDIR)/aattachmentpoint.o \
-@@ -305,29 +305,17 @@
- #endif
- 
- ifeq ($(HAVE_ALSA), y)
--ALSA_CFLAGS := -DHAVE_ALSA -I$(ALSA_DIR)/include
--ALSA_LIBS := $(ALSA_DIR)/$(OBJDIR)/libasound.a
-+ALSA_CFLAGS := -DHAVE_ALSA
-+ALSA_LIBS := -lasound
- endif
- 
+ 	$(OBJDIR)/aautomation.o \
+@@ -318,21 +304,10 @@
  
  
  STATICLIBS = \
--	$(ALSA_LIBS) \
 -	$(AVC_LIB) \
 -	$(RAW_LIB) \
 -	$(IEC_LIB) \
@@ -81,26 +57,25 @@
  
  LIBS := \
  	-L./ \
-@@ -344,6 +332,18 @@
+@@ -358,6 +333,17 @@
  
  
  LIBS += \
-+	$(ALSA_LIBS) \
 +	$(AVC_LIB) \
 +	$(RAW_LIB) \
 +	$(IEC_LIB) \
 +	-lquicktime -lvorbisfile \
-+        $(ESOUNDLIBS) \
++	$(ESOUNDLIBS) \
 +	-lIlmImf -lImath -lHalf -lIex \
 +	-ltiff \
 +	-lmpeg3 \
 +	$(SNDFILE_LIB) \
 +	-luuid \
 +	$(THEORA_LIB) \
- 	$(GLLIBS) \
  	-lX11 \
  	-lXext \
-@@ -361,29 +361,22 @@
+ 	-lXv \
+@@ -374,28 +360,21 @@
  
  CFLAGS += \
  	-I../guicast \
@@ -127,8 +102,7 @@
 +	-I/usr/include/lame \
 +	-I/usr/include/libmpeg3 \
  	$(ESOUNDCFLAGS) \
- 	$(ALSA_CFLAGS) \
--	-I$(FFMPEG_DIR)/libavcodec \
+-	-I$(FFMPEG_DIR)/libavcodec -I$(FFMPEG_DIR)/libavutil \
 -	-I$(THEORA_DIR)/include
 +	-I/usr/include/ffmpeg \
 +	-I/usr/include/theora
@@ -140,7 +114,7 @@
  
  
  
-@@ -489,7 +482,7 @@
+@@ -501,7 +480,7 @@
  
  $(FILEEXR): fileexr.C
  	@echo C++ $*.o
@@ -265,17 +239,6 @@
  	-I../colors \
  	-fPIC
  
---- cinelerra-1.2.0/cinelerra/audioalsa.h.orig	2003-10-14 09:53:59.000000000 +0200
-+++ cinelerra-1.2.0/cinelerra/audioalsa.h	2004-06-05 10:26:45.584744408 +0200
-@@ -5,7 +5,7 @@
- #include "audiodevice.h"
- 
- #ifdef HAVE_ALSA
--#include "asoundlib.h"
-+#include <alsa/asoundlib.h>
- 
- class AudioALSA : public AudioLowLevel
- {
 --- cinelerra-2.0/guicast/Makefile.orig	2005-11-01 14:30:52.865839000 +0100
 +++ cinelerra-2.0/guicast/Makefile	2005-11-01 14:41:01.161364152 +0100
 @@ -2,9 +2,9 @@
