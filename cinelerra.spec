@@ -22,7 +22,7 @@ Patch4:		%{name}-guicast_bootstrap.patch
 Patch5:		%{name}-fix.patch
 URL:		http://heroinewarrior.com/cinelerra.php3
 BuildRequires:	OpenEXR-devel >= 1.2.1
-BuildRequires:	XFree86-devel
+#BuildRequires:	OpenGL-devel >= 2.0
 BuildRequires:	alsa-lib-devel >= 1.0.8
 BuildRequires:	esound-devel
 BuildRequires:	freetype-devel >= 2.1.4
@@ -40,6 +40,10 @@ BuildRequires:	libuuid-devel
 BuildRequires:	nasm
 %endif
 BuildRequires:	quicktime4linux-devel >= 2.2
+BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	xorg-lib-libXext-devel
+BuildRequires:	xorg-lib-libXv-devel
+BuildRequires:	xorg-lib-libXxf86vm-devel
 Requires:	OpenEXR-devel >= 1.2.1
 Requires:	alsa-lib >= 1.0.8
 Requires:	freetype >= 2.1.4
@@ -88,9 +92,13 @@ Cinelerra by³a tworzona z my¶l± o zast±pieniu programu Broadcast 2000.
 %patch4 -p1
 %patch5 -p1
 
-# assume we have <linux/videodev2.h> (it's in llh)
-echo '#define HAVE_VIDEO4LINUX2' > hvirtual_config.h
-echo '#define PACKAGE_STRING "cinelerra"' >> hvirtual_config.h
+# assume we have <linux/videodev2.h> and <linux/dvb/*> (present in llh)
+# don't define HAVE_GL as Mesa doesn't support OpenGL 2.0 (e.g. glUseProgram()) yet
+cat > hvirtual_config.h <<EOF
+#define HAVE_VIDEO4LINUX2
+#define HAVE_DVB
+#define PACKAGE_STRING "cinelerra"
+EOF
 
 rm -rf OpenEXR-* alsa-lib-* audiofile esound fftw-* freetype-* libavc1394-* libiec61883-* libmpeg3 libraw1394-* libsndfile-* libtheora-* mjpegtools-* quicktime tiff-* uuid
 
