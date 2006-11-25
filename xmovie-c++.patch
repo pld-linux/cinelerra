@@ -1,0 +1,54 @@
+diff -urN xmovie-1.9.13.org/guicast/arraylist.h xmovie-1.9.13/guicast/arraylist.h
+--- xmovie-1.9.13.org/guicast/arraylist.h	2004-01-28 09:47:42.000000000 +0100
++++ xmovie-1.9.13/guicast/arraylist.h	2006-11-26 00:18:24.556046000 +0100
+@@ -1,6 +1,8 @@
+ #ifndef ARRAYLIST_H
+ #define ARRAYLIST_H
+ 
++#include <iostream>
++
+ // designed for lists of track numbers
+ 
+ template<class TYPE>
+@@ -173,7 +175,7 @@
+ 		remove_number(number);
+ 	}
+ 	else
+-		fprintf(stderr, "ArrayList<TYPE>::remove_object_number: number %d out of range %s.\n", number, total);
++		std::cerr << "ArrayList<TYPE>::remove_object_number: number " << number << " out of range " << total << std::endl;
+ }
+ 
+ 
+@@ -189,7 +191,7 @@
+ 		remove();
+ 	}
+ 	else
+-		fprintf(stderr, "ArrayList<TYPE>::remove_object: array is 0 length.\n");
++		std::cerr << "ArrayList<TYPE>::remove_object: array is 0 length." << std::endl;
+ }
+ 
+ 
+diff -urN xmovie-1.9.13.org/guicast/bclistbox.h xmovie-1.9.13/guicast/bclistbox.h
+--- xmovie-1.9.13.org/guicast/bclistbox.h	2004-04-06 08:38:39.000000000 +0200
++++ xmovie-1.9.13/guicast/bclistbox.h	2006-11-26 00:19:41.600861000 +0100
+@@ -353,7 +353,7 @@
+ 
+ 	int get_title_h();
+ 	int calculate_item_coords();
+-	void BC_ListBox::calculate_last_coords_recursive(
++	void calculate_last_coords_recursive(
+ 		ArrayList<BC_ListBoxItem*> *data,
+ 		int *icon_x,
+ 		int *next_icon_x,
+diff -urN xmovie-1.9.13.org/xmovie/playbackengine.h xmovie-1.9.13/xmovie/playbackengine.h
+--- xmovie-1.9.13.org/xmovie/playbackengine.h	2004-02-17 09:16:12.000000000 +0100
++++ xmovie-1.9.13/xmovie/playbackengine.h	2006-11-26 00:19:59.633988000 +0100
+@@ -26,7 +26,7 @@
+ 	int wait_for_startup();
+ 	int current_position(double *percentage, double *seconds);
+ 	void update_tracking(double tracking_position, double tracking_time);
+-	long PlaybackEngine::current_sample();
++	long current_sample();
+ 	void interrupt_playback(int wait_engine);
+ 
+ // Next command
