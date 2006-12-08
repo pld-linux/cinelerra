@@ -1,0 +1,43 @@
+--- cinelerra-2.1/cinelerra/dvbtune.C.orig	2006-02-28 05:41:15.000000000 +0100
++++ cinelerra-2.1/cinelerra/dvbtune.C	2006-07-05 11:53:08.114440000 +0200
+@@ -1,5 +1,5 @@
+-#include "../../guicast/bcwindowbase.inc"
+-#include "../../guicast/clip.h"
++#include "../guicast/bcwindowbase.inc"
++#include "../guicast/clip.h"
+ #include "condition.h"
+ #include "devicedvbinput.inc"
+ #include "dvbtune.h"
+--- cinelerra-2.1/global_config.orig	2006-07-06 08:29:38.378711000 +0200
++++ cinelerra-2.1/global_config	2006-07-06 08:29:48.367335500 +0200
+@@ -92,7 +92,7 @@
+ CXXREPOSITORY = cxx_repository/*.o
+ endif
+ 
+-$(shell sh -c 'if ! test -d $(OBJDIR)\; then mkdir $(OBJDIR)\; fi' )
++foo := $(shell sh -c 'if ! test -d $(OBJDIR); then mkdir $(OBJDIR); fi' )
+ 
+ ########################## LINKER
+ 
+--- cinelerra-2.1/guicast/Makefile.orig	2006-07-06 08:31:56.547346000 +0200
++++ cinelerra-2.1/guicast/Makefile	2006-07-06 08:33:18.644477000 +0200
+@@ -37,7 +37,7 @@
+ BOOTSTRAPFLAGS := -DBOOTSTRAP="\"objcopy -B sparc -I binary -O elf32-sparc\""
+ endif
+ 
+-$(shell sh -c 'if ! test -d $(OBJDIR)\; then mkdir $(OBJDIR)\; fi' )
++foo := $(shell sh -c 'if ! test -d $(OBJDIR); then mkdir $(OBJDIR); fi' )
+ 
+ OBJS = \
+ 	$(OBJDIR)/bcbar.o \
+--- cinelerra-2.1/cinelerra/Makefile.orig	2006-07-06 08:31:56.519344000 +0200
++++ cinelerra-2.1/cinelerra/Makefile	2006-07-06 08:40:30.435462250 +0200
+@@ -427,7 +427,7 @@
+ 
+ 
+ 
+-$(shell echo "\#define BUILDDATE \"`date`\"" > builddate.h )
++$(shell echo "#define BUILDDATE \"`date`\"" > builddate.h )
+ $(shell echo $(CFLAGS) > $(OBJDIR)/c_flags)
+ $(shell echo $(LDFLAGS1) $(OBJS) $(DCRAW) $(FILEEXR) $(AVIOBJS) $(CXXREPOSITORY) $(STATICLIBS) $(LIBS) $(LDFLAGS2) > $(OBJDIR)/objs)
+ 

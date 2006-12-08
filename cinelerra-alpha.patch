@@ -1,0 +1,23 @@
+--- cinelerra-1.1.7/global_config.orig	2003-11-10 10:38:51.000000000 +0000
++++ cinelerra-1.1.7/global_config	2003-11-10 10:48:10.000000000 +0000
+@@ -54,9 +54,6 @@
+ CFLAGS += $(ALSA_CFLAGS)
+ 
+ 
+-ifeq ($(OBJDIR), alpha)
+-CXXREPOSITORY = cxx_repository/*.o
+-endif
+ 
+ $(shell sh -c 'if ! test -d $(OBJDIR)\; then mkdir $(OBJDIR)\; fi' )
+ 
+--- cinelerra-1.1.7/cinelerra/Makefile.orig	2003-11-10 11:08:12.000000000 +0000
++++ cinelerra-1.1.7/cinelerra/Makefile	2003-11-10 11:44:07.000000000 +0000
+@@ -323,7 +323,7 @@
+ 
+ 
+ # Speed up linking with this linking sequence
+-ifeq ($(OBJDIR), alpha)
++ifeq ($(OBJDIR), alpha-ccc)
+ 
+ 
+ 
