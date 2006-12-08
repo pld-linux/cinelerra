@@ -30,14 +30,3 @@
  
  OBJS = \
  	$(OBJDIR)/bcbar.o \
---- cinelerra-2.1/cinelerra/Makefile.orig	2006-07-06 08:31:56.519344000 +0200
-+++ cinelerra-2.1/cinelerra/Makefile	2006-07-06 08:40:30.435462250 +0200
-@@ -427,7 +427,7 @@
- 
- 
- 
--$(shell echo "\#define BUILDDATE \"`date`\"" > builddate.h )
-+$(shell echo "#define BUILDDATE \"`date`\"" > builddate.h )
- $(shell echo $(CFLAGS) > $(OBJDIR)/c_flags)
- $(shell echo $(LDFLAGS1) $(OBJS) $(DCRAW) $(FILEEXR) $(AVIOBJS) $(CXXREPOSITORY) $(STATICLIBS) $(LIBS) $(LDFLAGS2) > $(OBJDIR)/objs)
- 
