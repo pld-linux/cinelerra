@@ -15,7 +15,7 @@
  endif
  
 -$(shell sh -c 'if ! test -d $(OBJDIR)\; then mkdir $(OBJDIR)\; fi' )
-+$(shell sh -c 'if ! test -d $(OBJDIR); then mkdir $(OBJDIR); fi' )
++foo := $(shell sh -c 'if ! test -d $(OBJDIR); then mkdir $(OBJDIR); fi' )
  
  ########################## LINKER
  
