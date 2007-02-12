@@ -6,7 +6,7 @@
 #   https://init.linpro.no/pipermail/skolelinux.no/cinelerra/2004-April/001413.html
 #
 Summary:	Cinelerra - capturing, editing and production of audio/video material
-Summary(pl):	Cinelerra - nagrywanie, obróbka i produkcja materia³u audio/video
+Summary(pl.UTF-8):   Cinelerra - nagrywanie, obrÃ³bka i produkcja materiaÅ‚u audio/video
 Name:		cinelerra
 Version:	2.1
 Release:	1
@@ -71,17 +71,17 @@ format, which makes Cinelerra very complex.
 
 Cinelerra was meant to be a Broadcast 2000 replacement.
 
-%description -l pl
-S± dwa rodzaje u¿ytkowników zajmuj±cych siê filmami: producenci
-tworz±cy nowe filmy, wracaj±cy do nich w przysz³o¶ci w celu dalszego
-wyg³adzenia, oraz konsumenci, którzy chc± tylko zdobyæ film i go
-obejrzeæ. Cinelerra nie jest dla konsumentów. Program ma wiele
-mo¿liwo¶ci do edycji nieskompresowanej zawarto¶ci, obróbki w wysokiej
-rozdzielczo¶ci oraz monta¿u, z bardzo ma³± liczb± skrótów. Producenci
-potrzebuj± tych mo¿liwo¶ci ze wzglêdu na konieczno¶æ retuszowania
-oraz modyfikacji formatu, co czyni program bardzo z³o¿onym.
+%description -l pl.UTF-8
+SÄ… dwa rodzaje uÅ¼ytkownikÃ³w zajmujÄ…cych siÄ™ filmami: producenci
+tworzÄ…cy nowe filmy, wracajÄ…cy do nich w przyszÅ‚oÅ›ci w celu dalszego
+wygÅ‚adzenia, oraz konsumenci, ktÃ³rzy chcÄ… tylko zdobyÄ‡ film i go
+obejrzeÄ‡. Cinelerra nie jest dla konsumentÃ³w. Program ma wiele
+moÅ¼liwoÅ›ci do edycji nieskompresowanej zawartoÅ›ci, obrÃ³bki w wysokiej
+rozdzielczoÅ›ci oraz montaÅ¼u, z bardzo maÅ‚Ä… liczbÄ… skrÃ³tÃ³w. Producenci
+potrzebujÄ… tych moÅ¼liwoÅ›ci ze wzglÄ™du na koniecznoÅ›Ä‡ retuszowania
+oraz modyfikacji formatu, co czyni program bardzo zÅ‚oÅ¼onym.
 
-Cinelerra by³a tworzona z my¶l± o zast±pieniu programu Broadcast 2000.
+Cinelerra byÅ‚a tworzona z myÅ›lÄ… o zastÄ…pieniu programu Broadcast 2000.
 
 %prep
 %setup -q
