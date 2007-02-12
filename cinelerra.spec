@@ -6,7 +6,7 @@
 #   https://init.linpro.no/pipermail/skolelinux.no/cinelerra/2004-April/001413.html
 #
 Summary:	Cinelerra - capturing, editing and production of audio/video material
-Summary(pl.UTF-8):   Cinelerra - nagrywanie, obróbka i produkcja materiału audio/video
+Summary(pl.UTF-8):	Cinelerra - nagrywanie, obróbka i produkcja materiału audio/video
 Name:		cinelerra
 Version:	2.1
 Release:	1
