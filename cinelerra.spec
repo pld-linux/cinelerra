@@ -44,7 +44,7 @@ BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXv-devel
 BuildRequires:	xorg-lib-libXxf86vm-devel
-Requires:	OpenEXR-devel >= 1.2.1
+Requires:	OpenEXR >= 1.2.1
 Requires:	alsa-lib >= 1.0.8
 Requires:	freetype >= 2.1.4
 Requires:	libavc1394 >= 0.5.1
