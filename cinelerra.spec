@@ -9,7 +9,7 @@ Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl.UTF-8):	Cinelerra - nagrywanie, obróbka i produkcja materiału audio/video
 Name:		cinelerra
 Version:	2.1
-Release:	2
+Release:	3
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
@@ -21,7 +21,7 @@ Patch3:		%{name}-locale_h.patch
 Patch4:		%{name}-guicast_bootstrap.patch
 Patch5:		%{name}-fix.patch
 URL:		http://heroinewarrior.com/cinelerra.php3
-BuildRequires:	OpenEXR-devel >= 1.2.1
+BuildRequires:	OpenEXR >= 1.2.1
 #BuildRequires:	OpenGL-devel >= 2.0
 BuildRequires:	alsa-lib-devel >= 1.0.8
 BuildRequires:	esound-devel
