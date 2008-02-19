@@ -9,7 +9,7 @@ Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl.UTF-8):	Cinelerra - nagrywanie, obróbka i produkcja materiału audio/video
 Name:		cinelerra
 Version:	2.1
-Release:	1
+Release:	5
 License:	GPL
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
@@ -78,8 +78,8 @@ wygładzenia, oraz konsumenci, którzy chcą tylko zdobyć film i go
 obejrzeć. Cinelerra nie jest dla konsumentów. Program ma wiele
 możliwości do edycji nieskompresowanej zawartości, obróbki w wysokiej
 rozdzielczości oraz montażu, z bardzo małą liczbą skrótów. Producenci
-potrzebują tych możliwości ze względu na konieczność retuszowania
-oraz modyfikacji formatu, co czyni program bardzo złożonym.
+potrzebują tych możliwości ze względu na konieczność retuszowania oraz
+modyfikacji formatu, co czyni program bardzo złożonym.
 
 Cinelerra była tworzona z myślą o zastąpieniu programu Broadcast 2000.
 
