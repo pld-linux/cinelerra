@@ -20,14 +20,14 @@
  	../../cinelerra/$(OBJDIR)/bootstrap $(OUTPUT_THEME) data/*.png
  
  include ../../plugin_config
---- cinelerra-1.2.1/cinelerra/Makefile.orig	2004-08-22 20:32:29.566359056 +0200
-+++ cinelerra-1.2.1/cinelerra/Makefile	2004-08-22 20:47:51.109263240 +0200
-@@ -412,7 +412,7 @@
- 	@echo LD $(OUTPUT)
- 	@$(LINKER) `cat $(OBJDIR)/objs`
- 	@echo STRIP $(OUTPUT)
--	@strip $(OUTPUT)
-+	@$(STRIP) $(OUTPUT)
+--- cinelerra-4/cinelerra/Makefile.orig	2008-08-28 18:02:51.486128443 +0200
++++ cinelerra-4/cinelerra/Makefile	2008-08-28 18:13:51.234129281 +0200
+@@ -449,7 +449,7 @@
+ # Also VFS only overrides the C library when dynamic linking is used.
+ $(OUTPUT): $(OBJS) $(DCRAW) $(FILEEXR) $(FFMPEG_OBJS) $(FILEFLAC) $(THEME_DATA) $(SNDFILE_LIB)
+ 	$(LINKER) `cat $(OBJDIR)/objs`
+-	strip $(OUTPUT)
++	$(STRIP) $(OUTPUT)
  
  $(OBJDIR)/test: 
  	$(CC) -shared -o $(OBJDIR)/test.so \

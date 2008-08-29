@@ -1,22 +1,21 @@
---- cinelerra-2.0/plugins/titler/title.C.orig	2005-05-12 10:41:22.000000000 +0200
-+++ cinelerra-2.0/plugins/titler/title.C	2005-11-01 14:03:10.117615280 +0100
-@@ -26,7 +26,7 @@
+--- cinelerra-4/plugins/titler/title.C.orig	2008-08-07 05:33:08.000000000 +0200
++++ cinelerra-4/plugins/titler/title.C	2008-08-28 18:23:34.662127605 +0200
+@@ -48,7 +48,7 @@
  #include <byteswap.h>
  #include <iconv.h>
  
--#define FONT_SEARCHPATH PLUGIN_DIR "/fonts"
+-#define FONT_SEARCHPATH "/fonts"
 +#define FONT_SEARCHPATH "/usr/share/fonts"
  
  REGISTER_PLUGIN(TitleMain)
  
---- cinelerra-2.0/plugins/titler/Makefile.orig	2005-11-01 13:51:28.423289000 +0100
-+++ cinelerra-2.0/plugins/titler/Makefile	2005-11-01 14:03:27.131028848 +0100
-@@ -21,8 +21,6 @@
- 
- install:
- 	cp $(OUTPUT_PLUGIN) $(PLUGINDIR)
--	mkdir -p $(PLUGINDIR)/fonts
--	cp fonts/* $(PLUGINDIR)/fonts
- 
- 
- 
+@@ -982,8 +982,7 @@
+ 		fonts = new ArrayList<FontEntry*>;
+ 		char find_command[BCTEXTLEN];
+ 		sprintf(find_command, 
+-			"find %s%s -name 'fonts.dir' -print -exec cat {} \\;", 
+-			PluginClient::get_plugin_dir(),
++			"find %s -name 'fonts.dir' -print -exec cat {} \\;", 
+ 			FONT_SEARCHPATH);
+ 		FILE *in = popen(find_command, "r");
+ 		char current_dir[BCTEXTLEN];
