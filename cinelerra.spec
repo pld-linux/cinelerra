@@ -8,28 +8,30 @@
 Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl.UTF-8):	Cinelerra - nagrywanie, obróbka i produkcja materiału audio/video
 Name:		cinelerra
-Version:	2.1
-Release:	5
-License:	GPL
+Version:	4
+Release:	1
+License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
-# Source0-md5:	0f0523ef1aa94efb5152dcc494009b56
+# Source0-md5:	8f8d0eaa4378ba0c5be7d0a682c02d3e
 Patch0:		%{name}-system-libs.patch
 Patch1:		%{name}-strip.patch
 Patch2:		%{name}-fontsdir.patch
 Patch3:		%{name}-locale_h.patch
 Patch4:		%{name}-guicast_bootstrap.patch
 Patch5:		%{name}-fix.patch
+Patch6:		%{name}-plugindir.patch
 URL:		http://heroinewarrior.com/cinelerra.php3
-BuildRequires:	OpenEXR-devel >= 1.2.1
-#BuildRequires:	OpenGL-devel >= 2.0
+BuildRequires:	OpenEXR-devel >= 1.6.1
+BuildRequires:	OpenGL-devel >= 2.0
 BuildRequires:	alsa-lib-devel >= 1.0.8
 BuildRequires:	esound-devel
+BuildRequires:	flac-devel >= 1.1.4
 BuildRequires:	freetype-devel >= 2.1.4
 BuildRequires:	lame-libs-devel >= 3.93.1
 BuildRequires:	libavc1394-devel >= 0.5.1
 BuildRequires:	libiec61883-devel >= 1.0.0
-BuildRequires:	libmpeg3-devel >= 1.7
+BuildRequires:	libmpeg3-devel >= 1.8
 BuildRequires:	libraw1394-devel >= 1.2.0
 BuildRequires:	libsndfile-devel >= 1.0.11
 BuildRequires:	libstdc++-devel >= 5:3.2.2
@@ -39,21 +41,21 @@ BuildRequires:	libuuid-devel
 %ifarch %{ix86}
 BuildRequires:	nasm
 %endif
-BuildRequires:	quicktime4linux-devel >= 2.2
+BuildRequires:	quicktime4linux-devel >= 2.3
 BuildRequires:	xorg-lib-libX11-devel
 BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXv-devel
 BuildRequires:	xorg-lib-libXxf86vm-devel
-Requires:	OpenEXR >= 1.2.1
+Requires:	OpenEXR >= 1.6.1
 Requires:	alsa-lib >= 1.0.8
 Requires:	freetype >= 2.1.4
 Requires:	libavc1394 >= 0.5.1
 Requires:	libiec61883 >= 1.0.0
-Requires:	libmpeg3 >= 1.7
+Requires:	libmpeg3 >= 1.8
 Requires:	libraw1394 >= 1.2.0
 Requires:	libsndfile >= 1.0.11
 Requires:	libtheora >= 1.0-0.alpha4
-Requires:	quicktime4linux >= 2.2
+Requires:	quicktime4linux >= 2.3
 Obsoletes:	bcast
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -91,27 +93,38 @@ Cinelerra była tworzona z myślą o zastąpieniu programu Broadcast 2000.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 
 # assume we have <linux/videodev2.h> and <linux/dvb/*> (present in llh)
-# don't define HAVE_GL as Mesa doesn't support OpenGL 2.0 (e.g. glUseProgram()) yet
 cat > hvirtual_config.h <<EOF
 #define HAVE_VIDEO4LINUX2
 #define HAVE_DVB
+#define HAVE_GL
 #define PACKAGE_STRING "cinelerra"
 EOF
 
-rm -rf OpenEXR-* alsa-lib-* audiofile esound fftw-* freetype-* libavc1394-* libiec61883-* libmpeg3 libraw1394-* libsndfile-* libtheora-* mjpegtools-* quicktime tiff-* uuid
+%{__rm} -r libmpeg3 quicktime \
+	thirdparty/{audiofile,esound,fftw-*,flac-*,freetype-*,ilmbase-*,libavc1394-*,libiec61883-*,libraw1394-*,libsndfile-*,libtheora-*,mjpegtools-*,openexr-*,tiff-*,uuid}
 
 %build
-CFLAGS="%{rpmcflags}"; export CFLAGS
-%{__make} -f build/Makefile.toolame
-%{__make} -C mpeg2enc
-%{__make} -C mplexlo
-%{__make} -C guicast
+export CFLAGS="%{rpmcflags}"
+%{__make} -f build/Makefile.toolame \
+	GCC="%{__cc}"
+%{__make} -C mpeg2enc \
+	CC="%{__cc}"
+%{__make} -C mplexlo \
+	CC="%{__cc}"
+%{__make} -C guicast \
+	GCC="%{__cc}" \
+	CC="%{__cxx}"
 # cinelerra, defaulttheme and microtheme are stripped before running "bootstrap"
 %{__make} -C cinelerra \
+	GCC="%{__cc}" \
+	CC="%{__cxx}" \
+	LINKER='%{__cxx} -o $(OUTPUT)' \
 	STRIP="%{?debug:true}%{!?debug:strip -R.note -R.comment}"
 %{__make} -C plugins \
+	CC="%{__cxx}" \
 	STRIP="%{?debug:true}%{!?debug:strip -R.note -R.comment}"
 
 %install
