@@ -9,7 +9,7 @@ Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl.UTF-8):	Cinelerra - nagrywanie, obróbka i produkcja materiału audio/video
 Name:		cinelerra
 Version:	4
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
@@ -21,6 +21,8 @@ Patch3:		%{name}-locale_h.patch
 Patch4:		%{name}-guicast_bootstrap.patch
 Patch5:		%{name}-fix.patch
 Patch6:		%{name}-plugindir.patch
+Patch7:		%{name}-ffmpeg.patch
+Patch8:		%{name}-fade_error.patch
 URL:		http://heroinewarrior.com/cinelerra.php3
 BuildRequires:	OpenEXR-devel >= 1.6.1
 BuildRequires:	OpenGL-devel >= 2.0
@@ -94,6 +96,8 @@ Cinelerra była tworzona z myślą o zastąpieniu programu Broadcast 2000.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
+%patch8 -p1
 
 # assume we have <linux/videodev2.h> and <linux/dvb/*> (present in llh)
 cat > hvirtual_config.h <<EOF
