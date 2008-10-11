@@ -1,0 +1,57 @@
+--- cinelerra-4/quicktime/mpeg4.c	2008-08-05 10:27:28.000000000 +0200
++++ cinelerra-4-new/quicktime/mpeg4.c	2008-10-11 18:50:21.915259427 +0200
+@@ -671,7 +671,11 @@ static int encode(quicktime_t *file, uns
+ 
+         	context->b_quant_factor = 1.25;
+         	context->b_quant_offset = 1.25;
++		  #if LIBAVCODEC_VERSION_INT < ((52<<16)+(0<<8)+0)
+ 			context->error_resilience = FF_ER_CAREFUL;
++		  #else
++			context->error_recognition = FF_ER_CAREFUL;
++		  #endif
+ 			context->error_concealment = 3;
+ 			context->frame_skip_cmp = FF_CMP_DCTMAX;
+ 			context->ildct_cmp = FF_CMP_VSAD;
+--- cinelerra-4/quicktime/wma.c	2007-01-09 08:09:49.000000000 +0100
++++ cinelerra-4-new/quicktime/wma.c	2008-10-11 18:57:13.831898263 +0200
+@@ -187,11 +187,20 @@ printf("decode 2 %x %llx %llx\n", chunk_
+ 
+ // Decode chunk into work buffer.
+ 		pthread_mutex_lock(&ffmpeg_lock);
++	 #if LIBAVCODEC_VERSION_INT < ((52<<16)+(0<<8)+0)
+ 		result = avcodec_decode_audio(codec->decoder_context, 
+ 			(int16_t*)(codec->work_buffer + codec->output_size * sample_size), 
+             &bytes_decoded,
+             codec->packet_buffer, 
+ 			chunk_size);
++	 #else
++		bytes_decoded = AVCODEC_MAX_AUDIO_FRAME_SIZE;
++		result = avcodec_decode_audio2(codec->decoder_context, 
++			(int16_t*)(codec->work_buffer + codec->output_size * sample_size),
++			&bytes_decoded,
++			codec->packet_buffer,
++			chunk_size);
++	 #endif
+ 		pthread_mutex_unlock(&ffmpeg_lock);
+ 		if(bytes_decoded <= 0)
+ 		{
+--- cinelerra-4/cinelerra/fileffmpeg.C	2008-08-06 10:58:43.000000000 +0200
++++ cinelerra-4-new/cinelerra/fileffmpeg.C	2008-10-11 19:10:39.978678517 +0200
+@@ -384,7 +384,7 @@ void FileFFMPEG::dump_context(void *ptr)
+ 	printf("    codec_id=%d\n", context->codec_id);
+ 	printf("    codec_tag=%d\n", context->codec_tag);
+ 	printf("    workaround_bugs=%d\n", context->workaround_bugs);
+-	printf("    error_resilience=%d\n", context->error_resilience);
++	printf("    error_recognition=%d\n", context->error_recognition);
+ 	printf("    has_b_frames=%d\n", context->has_b_frames);
+ 	printf("    block_align=%d\n", context->block_align);
+ 	printf("    parse_only=%d\n", context->parse_only);
+@@ -393,7 +393,7 @@ void FileFFMPEG::dump_context(void *ptr)
+ 	printf("    slice_offset=%p\n", context->slice_offset);
+ 	printf("    error_concealment=%d\n", context->error_concealment);
+ 	printf("    dsp_mask=%p\n", context->dsp_mask);
+-	printf("    bits_per_sample=%d\n", context->bits_per_sample);
++	printf("    bits_per_coded_sample=%d\n", context->bits_per_coded_sample);
+ 	printf("    slice_flags=%d\n", context->slice_flags);
+ 	printf("    xvmc_acceleration=%d\n", context->xvmc_acceleration);
+ 	printf("    antialias_algo=%d\n", context->antialias_algo);
