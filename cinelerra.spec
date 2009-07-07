@@ -13,7 +13,7 @@ Release:	3
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
-# Source0-md5:	8f8d0eaa4378ba0c5be7d0a682c02d3e
+# Source0-md5:	0faf7158859646c5ea6181283594b19a
 Patch0:		%{name}-system-libs.patch
 Patch1:		%{name}-strip.patch
 Patch2:		%{name}-fontsdir.patch
@@ -23,7 +23,7 @@ Patch5:		%{name}-fix.patch
 Patch6:		%{name}-plugindir.patch
 Patch7:		%{name}-ffmpeg.patch
 Patch8:		%{name}-fade_error.patch
-URL:		http://heroinewarrior.com/cinelerra.php3
+URL:		http://www.heroinewarrior.com/cinelerra.php
 BuildRequires:	OpenEXR-devel >= 1.6.1
 BuildRequires:	OpenGL-devel >= 2.0
 BuildRequires:	alsa-lib-devel >= 1.0.8
