@@ -113,36 +113,46 @@ EOF
 %build
 export CFLAGS="%{rpmcflags}"
 %{__make} -f build/Makefile.toolame \
+	STRIP="true" \
 	GCC="%{__cc}"
 %{__make} -C mpeg2enc \
+	STRIP="true" \
 	CC="%{__cc}"
 %{__make} -C mplexlo \
+	STRIP="true" \
 	CC="%{__cc}"
 %{__make} -C guicast \
+	STRIP="true" \
 	GCC="%{__cc}" \
 	CC="%{__cxx}"
 # cinelerra, defaulttheme and microtheme are stripped before running "bootstrap"
 %{__make} -C cinelerra \
+	STRIP="true" \
 	GCC="%{__cc}" \
 	CC="%{__cxx}" \
-	LINKER='%{__cxx} -o $(OUTPUT)' \
-	STRIP="%{?debug:true}%{!?debug:strip -R.note -R.comment}"
+	LINKER='%{__cxx} -o $(OUTPUT)'
 %{__make} -C plugins \
+	STRIP="true" \
 	CC="%{__cxx}" \
-	STRIP="%{?debug:true}%{!?debug:strip -R.note -R.comment}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}/cinelerra}
-
-install cinelerra/*/cinelerra $RPM_BUILD_ROOT%{_bindir}
-install plugins/`uname -m`/*.plugin $RPM_BUILD_ROOT%{_libdir}/cinelerra
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}/cinelerra,%{_datadir}/locale}
+cp -a bin/* $RPM_BUILD_ROOT%{_libdir}/cinelerra
+mv $RPM_BUILD_ROOT{%{_libdir}/cinelerra,%{_bindir}}/cinelerra
+mv $RPM_BUILD_ROOT{%{_libdir}/cinelerra/locale/*,%{_datadir}/locale}
+rm -rf $RPM_BUILD_ROOT%{_libdir}/cinelerra/{doc,README,COPYING,c_flags}
+%find_lang %{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc doc/{*.png,*.html,press} cinelerra/{CHANGELOG*,TODO}
-%attr(755,root,root) %{_bindir}/*
-%attr(755,root,root) %{_libdir}/cinelerra
+%attr(755,root,root) %{_bindir}/cinelerra
+%dir %{_libdir}/cinelerra
+%attr(755,root,root) %{_libdir}/cinelerra/*.plugin
+%attr(755,root,root) %{_libdir}/cinelerra/mpeg3*
+%{_libdir}/cinelerra/fonts
+%{_libdir}/cinelerra/shapes
