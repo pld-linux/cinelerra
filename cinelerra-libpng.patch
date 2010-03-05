@@ -1,0 +1,11 @@
+--- cinelerra/filepng.C.orig	2009-08-06 01:38:39.000000000 +0200
++++ cinelerra/filepng.C	2010-03-05 12:31:25.836243101 +0100
+@@ -54,7 +54,7 @@
+ 		fread(test, 16, 1, stream);
+ 		fclose(stream);
+ 
+-		if(png_check_sig((unsigned char*)test, 8))
++		if(png_sig_cmp((unsigned char*)test, 0, 8))
+ 		{
+ //printf("FilePNG::check_sig 1\n");
+ 			return 1;
