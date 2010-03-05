@@ -8,21 +8,19 @@
 Summary:	Cinelerra - capturing, editing and production of audio/video material
 Summary(pl.UTF-8):	Cinelerra - nagrywanie, obróbka i produkcja materiału audio/video
 Name:		cinelerra
-Version:	4
-Release:	4
+Version:	4.1
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://dl.sourceforge.net/heroines/%{name}-%{version}-src.tar.bz2
-# Source0-md5:	0faf7158859646c5ea6181283594b19a
+# Source0-md5:	e489693cf7ccc98c46cbcf8f751210c3
 Patch0:		%{name}-system-libs.patch
 Patch1:		%{name}-strip.patch
 Patch2:		%{name}-fontsdir.patch
 Patch3:		%{name}-locale_h.patch
 Patch4:		%{name}-guicast_bootstrap.patch
 Patch5:		%{name}-fix.patch
-Patch6:		%{name}-plugindir.patch
-Patch7:		%{name}-ffmpeg.patch
-Patch8:		%{name}-fade_error.patch
+Patch6:		%{name}-libpng.patch
 URL:		http://www.heroinewarrior.com/cinelerra.php
 BuildRequires:	OpenEXR-devel >= 1.6.1
 BuildRequires:	OpenGL-devel >= 2.0
@@ -95,9 +93,7 @@ Cinelerra była tworzona z myślą o zastąpieniu programu Broadcast 2000.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
+%patch6 -p0
 
 # assume we have <linux/videodev2.h> and <linux/dvb/*> (present in llh)
 cat > hvirtual_config.h <<EOF
@@ -137,22 +133,17 @@ export CFLAGS="%{rpmcflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}/cinelerra,%{_datadir}/locale}
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}/cinelerra}
 cp -a bin/* $RPM_BUILD_ROOT%{_libdir}/cinelerra
 mv $RPM_BUILD_ROOT{%{_libdir}/cinelerra,%{_bindir}}/cinelerra
-mv $RPM_BUILD_ROOT{%{_libdir}/cinelerra/locale/*,%{_datadir}/locale}
-rm -rf $RPM_BUILD_ROOT%{_libdir}/cinelerra/{doc,README,COPYING,c_flags}
-%find_lang %{name}
+rm -rf $RPM_BUILD_ROOT%{_libdir}/cinelerra/c_flags
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -f %{name}.lang
+%files
 %defattr(644,root,root,755)
 %doc doc/{*.png,*.html,press} cinelerra/{CHANGELOG*,TODO}
 %attr(755,root,root) %{_bindir}/cinelerra
 %dir %{_libdir}/cinelerra
 %attr(755,root,root) %{_libdir}/cinelerra/*.plugin
-%attr(755,root,root) %{_libdir}/cinelerra/mpeg3*
-%{_libdir}/cinelerra/fonts
-%{_libdir}/cinelerra/shapes
