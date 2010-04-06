@@ -23,8 +23,10 @@ Patch5:		%{name}-fix.patch
 Patch6:		%{name}-libpng.patch
 URL:		http://www.heroinewarrior.com/cinelerra.php
 BuildRequires:	OpenEXR-devel >= 1.6.1
+BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	OpenGL-devel >= 2.0
 BuildRequires:	alsa-lib-devel >= 1.0.8
+BuildRequires:	bzip2-devel
 BuildRequires:	esound-devel
 BuildRequires:	flac-devel >= 1.1.4
 BuildRequires:	freetype-devel >= 2.1.4
