@@ -1,57 +1,34 @@
---- cinelerra-4/quicktime/mpeg4.c~	2008-09-02 14:38:12.000000000 +0300
-+++ cinelerra-4/quicktime/mpeg4.c	2009-07-07 11:53:27.567616978 +0300
-@@ -680,7 +680,11 @@
+Only in cinelerra-4.1.fix/bin: cinelerra
+diff -ur cinelerra-4.1.orig/cinelerra/fileac3.C cinelerra-4.1.fix/cinelerra/fileac3.C
+--- cinelerra-4.1.orig/cinelerra/fileac3.C	2010-08-25 13:18:55.974081519 +0200
++++ cinelerra-4.1.fix/cinelerra/fileac3.C	2010-08-25 13:36:19.960436542 +0200
+@@ -19,6 +19,8 @@
+  * 
+  */
  
- //        	context->b_quant_factor = 1.25;
- //        	context->b_quant_offset = 1.25;
-+//		  #if LIBAVCODEC_VERSION_INT < ((52<<16)+(0<<8)+0)
- //			context->error_resilience = FF_ER_CAREFUL;
-+//		  #else
-+//			context->error_recognition = FF_ER_CAREFUL;
-+//		  #endif
- //			context->error_concealment = 3;
- //			context->frame_skip_cmp = FF_CMP_DCTMAX;
- //			context->ildct_cmp = FF_CMP_VSAD;
---- cinelerra-4/quicktime/wma.c	2007-01-09 08:09:49.000000000 +0100
-+++ cinelerra-4-new/quicktime/wma.c	2008-10-11 18:57:13.831898263 +0200
-@@ -187,11 +187,20 @@ printf("decode 2 %x %llx %llx\n", chunk_
++#define __STDC_CONSTANT_MACROS
++
+ #include "asset.h"
  
- // Decode chunk into work buffer.
- 		pthread_mutex_lock(&ffmpeg_lock);
-+	 #if LIBAVCODEC_VERSION_INT < ((52<<16)+(0<<8)+0)
- 		result = avcodec_decode_audio(codec->decoder_context, 
- 			(int16_t*)(codec->work_buffer + codec->output_size * sample_size), 
-             &bytes_decoded,
-             codec->packet_buffer, 
- 			chunk_size);
-+	 #else
-+		bytes_decoded = AVCODEC_MAX_AUDIO_FRAME_SIZE;
-+		result = avcodec_decode_audio2(codec->decoder_context, 
-+			(int16_t*)(codec->work_buffer + codec->output_size * sample_size),
-+			&bytes_decoded,
-+			codec->packet_buffer,
-+			chunk_size);
-+	 #endif
- 		pthread_mutex_unlock(&ffmpeg_lock);
- 		if(bytes_decoded <= 0)
- 		{
---- cinelerra-4/cinelerra/fileffmpeg.C	2008-08-06 10:58:43.000000000 +0200
-+++ cinelerra-4-new/cinelerra/fileffmpeg.C	2008-10-11 19:10:39.978678517 +0200
-@@ -384,7 +384,7 @@ void FileFFMPEG::dump_context(void *ptr)
- 	printf("    codec_id=%d\n", context->codec_id);
- 	printf("    codec_tag=%d\n", context->codec_tag);
- 	printf("    workaround_bugs=%d\n", context->workaround_bugs);
--	printf("    error_resilience=%d\n", context->error_resilience);
-+	printf("    error_recognition=%d\n", context->error_recognition);
- 	printf("    has_b_frames=%d\n", context->has_b_frames);
- 	printf("    block_align=%d\n", context->block_align);
- 	printf("    parse_only=%d\n", context->parse_only);
-@@ -393,7 +393,7 @@ void FileFFMPEG::dump_context(void *ptr)
- 	printf("    slice_offset=%p\n", context->slice_offset);
- 	printf("    error_concealment=%d\n", context->error_concealment);
- 	printf("    dsp_mask=%p\n", context->dsp_mask);
--	printf("    bits_per_sample=%d\n", context->bits_per_sample);
-+	printf("    bits_per_coded_sample=%d\n", context->bits_per_coded_sample);
- 	printf("    slice_flags=%d\n", context->slice_flags);
- 	printf("    xvmc_acceleration=%d\n", context->xvmc_acceleration);
- 	printf("    antialias_algo=%d\n", context->antialias_algo);
+ extern "C" 
+diff -ur cinelerra-4.1.orig/cinelerra/fileffmpeg.C cinelerra-4.1.fix/cinelerra/fileffmpeg.C
+--- cinelerra-4.1.orig/cinelerra/fileffmpeg.C	2010-08-25 13:18:56.057207183 +0200
++++ cinelerra-4.1.fix/cinelerra/fileffmpeg.C	2010-08-25 13:36:03.847102952 +0200
+@@ -19,6 +19,8 @@
+  * 
+  */
+ 
++#define __STDC_CONSTANT_MACROS
++
+ #include "asset.h" 
+ extern "C" 
+ {
+@@ -574,7 +576,7 @@
+ 			case PIX_FMT_YUV420P:
+ 				input_cmodel = BC_YUV420P;
+ 				break;
+-			case PIX_FMT_YUV422:
++			case PIX_FMT_YUYV422:
+ 				input_cmodel = BC_YUV422;
+ 				break;
+ 			case PIX_FMT_YUV422P:
