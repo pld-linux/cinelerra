@@ -9,3 +9,31 @@
  		{
  //printf("FilePNG::check_sig 1\n");
  			return 1;
+--- plugins/shapewipe/shapewipe.C.orig	2012-09-21 19:50:49.184736513 +0100
++++ plugins/shapewipe/shapewipe.C	2012-09-21 19:51:20.498072776 +0100
+@@ -467,7 +467,7 @@
+ 	}
+ 
+ 	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,
+-		png_voidp_NULL, png_error_ptr_NULL, png_error_ptr_NULL);
++		NULL, NULL, NULL);
+ 
+ 	if (!png_ptr)
+ 	{
+@@ -480,14 +480,14 @@
+ 	info_ptr = png_create_info_struct(png_ptr);
+ 	if (!info_ptr)
+ 	{
+-		png_destroy_read_struct(&png_ptr, png_infopp_NULL, png_infopp_NULL);
++		png_destroy_read_struct(&png_ptr, NULL, NULL);
+ 		return 1;
+ 	}
+ 
+ 	end_info = png_create_info_struct(png_ptr);
+ 	if (!end_info)
+ 	{
+-		png_destroy_read_struct(&png_ptr, &info_ptr, png_infopp_NULL);
++		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+ 		return 1;
+ 	}
+ 
