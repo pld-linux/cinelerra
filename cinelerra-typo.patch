@@ -1,0 +1,11 @@
+--- cinelerra-4.4.orig/quicktime/Makefile~	2012-09-19 00:32:09.652662204 +0100
++++ cinelerra-4.4/quicktime/Makefile	2012-09-19 00:32:39.119331629 +0100
+@@ -262,7 +262,7 @@
+ 
+ all: $(OBJDIR) $(OUTPUT)
+ 
+-$(OUTPUT): $(OBJS) $(FFMPEG_OBJS) $(ENCOREMMX_OBJS) $(JPEG_NASM) $(LAME_OBJS) $(FAAD_LIB) $(FAAC_LIB) $(FFMPEG_LIB) $(X264_LIB) $(DV_LIB) $(JPEG_LIB) $(OGG_LIB)/ $(VORBIS_LIB)
++$(OUTPUT): $(OBJS) $(FFMPEG_OBJS) $(ENCOREMMX_OBJS) $(JPEG_NASM) $(LAME_OBJS) $(FAAD_LIB) $(FAAC_LIB) $(FFMPEG_LIB) $(X264_LIB) $(DV_LIB) $(JPEG_LIB) $(OGG_LIB) $(VORBIS_LIB)
+ 	find $(FFMPEG_DIR)/libavcodec/ -name *.o >> $(OBJDIR)/objs
+ 	find $(FFMPEG_DIR)/libavformat/ -name *.o >> $(OBJDIR)/objs
+ 	find $(FFMPEG_DIR)/libavutil/ -name *.o >> $(OBJDIR)/objs
