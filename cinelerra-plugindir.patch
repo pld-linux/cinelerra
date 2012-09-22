@@ -1,25 +1,21 @@
---- cinelerra-4/cinelerra/mwindow.inc.orig	2008-08-07 05:33:08.000000000 +0200
-+++ cinelerra-4/cinelerra/mwindow.inc	2008-08-29 07:04:50.966113358 +0200
-@@ -28,11 +28,11 @@
- #define CONFIG_FILE "Cinelerra_rc"
- #define PRESETS_FILE "Cinelerra_presets"
+--- cinelerra/preferences.inc.orig	2012-09-22 13:38:33.839435794 +0100
++++ cinelerra/preferences.inc	2012-09-22 13:38:36.049436001 +0100
+@@ -27,6 +27,12 @@
+ #define BACKUP_PATH BCASTDIR "backup.xml"
+ #define DEAMON_PORT 400
  
--// #ifdef __x86_64__
--// #define PLUGIN_DIR "/usr/lib64/cinelerra"
--// #else
--// #define PLUGIN_DIR "/usr/lib/cinelerra"
--// #endif
 +#if defined(__x86_64__) || defined(__arch64__) || defined(__powerpc64__) || defined(__s390x__)
 +#define PLUGIN_DIR "/usr/lib64/cinelerra"
 +#else
 +#define PLUGIN_DIR "/usr/lib/cinelerra"
 +#endif
- 
- // What to call silence in the EDL
- #define SILENCE "SILENCE"
---- cinelerra-4/cinelerra/preferences.C.orig	2008-08-07 05:33:08.000000000 +0200
-+++ cinelerra-4/cinelerra/preferences.C	2008-08-29 07:08:45.698118386 +0200
-@@ -61,7 +61,7 @@ Preferences::Preferences()
++
+ class Preferences;
+ class PlaybackConfig;
+ class AudioOutConfig;
+--- cinelerra/preferences.C.orig	2012-01-07 23:02:41.000000000 +0000
++++ cinelerra/preferences.C	2012-09-22 13:37:35.149430302 +0100
+@@ -62,7 +62,7 @@
  
  
  

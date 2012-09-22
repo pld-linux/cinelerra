@@ -2,9 +2,8 @@
 # imho, it is pointless to build this app with system libraries until we
 # start submitting patches to the author (is that possible with his
 # current development and release strategy?)... anyway, the todo follows
-# - make a patch for plugin dir in preferences.C, i.e.
-#       get_exe_path(plugin_dir); -> sprintf(plugin_dir, PLUGIN_DIR);
-#   or move plugins to %{_bindir}... otherwise you cannot run it 
+# - deal with fonts dir and plugins dir patches (cinelerra writes lists of
+#   plugins in plugins dir:/)
 # - review existing, but commented out patches
 # - send the existing patches to the author (so we do not have to maintain
 #   them forever)
@@ -33,6 +32,7 @@ Patch7:		%{name}-ffmpeg.patch
 Patch8:		%{name}-typo.patch
 # see speech_tools package
 Patch9:		%{name}-st.patch
+Patch10:	%{name}-plugindir.patch
 URL:		http://www.heroinewarrior.com/cinelerra.php
 BuildRequires:	OpenEXR-devel >= 1.6.1
 BuildRequires:	OpenGL-GLU-devel
@@ -112,6 +112,7 @@ Cinelerra była tworzona z myślą o zastąpieniu programu Broadcast 2000.
 #x#%patch7 -p1
 %patch8 -p1
 %patch9 -p0
+%patch10 -p0
 
 #x## assume we have <linux/videodev2.h> and <linux/dvb/*> (present in llh)
 #x#cat > hvirtual_config.h <<EOF
@@ -181,4 +182,3 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/cinelerra
 %dir %{_libdir}/cinelerra
 %attr(755,root,root) %{_libdir}/cinelerra/*.plugin
-%{_libdir}/cinelerra/Cinelerra_plugins
