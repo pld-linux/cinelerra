@@ -1,0 +1,119 @@
+--- ./thirdparty/speech_tools/include/EST_TIterator.h.orig	2012-09-19 01:09:15.328399159 +0100
++++ ./thirdparty/speech_tools/include/EST_TIterator.h	2012-09-19 01:09:45.291736803 +0100
+@@ -101,7 +101,7 @@
+ 
+   /// Create an iterator ready to run over the given container.
+   EST_TIterator(const Container &over)
+-    { begin(over); }
++    { this->begin(over); }
+ 
+   /// Copy an iterator by assignment
+   Iter &operator = (const Iter &orig)
+@@ -109,7 +109,7 @@
+ 
+   /// Assigning a container to an iterator sets it ready to start.
+   Iter &operator = (const Container &over)
+-    { begin(over); return *this;}
++    { this->begin(over); return *this;}
+ 
+   /// Set the iterator ready to run over this container.
+   void begin(const Container &over)
+@@ -209,7 +209,7 @@
+ 
+   /// Create an iterator ready to run over the given container.
+   EST_TStructIterator(const Container &over)
+-    { begin(over); }
++    { this->begin(over); }
+ 
+   const Entry *operator ->() const
+     {return &this->current();}
+@@ -239,7 +239,7 @@
+ 
+   /// Create an iterator ready to run over the given container.
+   EST_TRwIterator(Container &over)
+-    { begin(over); }
++    { this->begin(over); }
+ 
+   /// Set the iterator ready to run over this container.
+   void begin(Container &over)
+@@ -289,7 +289,7 @@
+ 
+   /// Create an iterator ready to run over the given container.
+   EST_TRwStructIterator(Container &over)
+-    { begin(over); }
++    { this->begin(over); }
+ 
+   Entry *operator ->() const
+     {return &this->current();}
+--- ./thirdparty/speech_tools/include/EST_TNamedEnum.h.orig	2012-09-19 01:13:32.548424745 +0100
++++ ./thirdparty/speech_tools/include/EST_TNamedEnum.h	2012-09-19 01:13:17.705090022 +0100
+@@ -130,7 +130,7 @@
+ 	{this->initialise((const void *)defs); };
+   EST_TNamedEnumI(EST_TValuedEnumDefinition<const char *,const char *,INFO> defs[], ENUM (*conv)(const char *))
+ 	{this->initialise((const void *)defs, conv); };
+-  const char *name(ENUM tok, int n=0) const {return value(tok,n); };
++  const char *name(ENUM tok, int n=0) const {return this->value(tok,n); };
+ 
+ };
+ 
+--- ./thirdparty/speech_tools/base_class/EST_TSimpleMatrix.cc.orig	2012-09-19 01:15:38.485103201 +0100
++++ ./thirdparty/speech_tools/base_class/EST_TSimpleMatrix.cc	2012-09-19 01:17:50.905115595 +0100
+@@ -40,6 +40,7 @@
+  /*                                                                       */
+  /*************************************************************************/
+ 
++#include <string.h>
+ #include "EST_TSimpleMatrix.h"
+ #include "EST_TVector.h"
+ #include <fstream>
+@@ -97,7 +98,7 @@
+ 	{
+ 	  int copy_r = Lof(this->num_rows(), new_rows);
+ 
+-	  just_resize(new_rows, new_cols, &old_vals);
++	  this->just_resize(new_rows, new_cols, &old_vals);
+ 
+ // 	  memcpy((void *)this->p_memory, 
+ // 		 (const void *)old_vals,
+@@ -131,9 +132,9 @@
+ 	  int copy_r = Lof(this->num_rows(), new_rows);
+ 	  int copy_c = Lof(this->num_columns(), new_cols);
+ 	  
+-	  just_resize(new_rows, new_cols, &old_vals);
++	  this->just_resize(new_rows, new_cols, &old_vals);
+ 
+-	  set_values(old_vals,
++	  this->set_values(old_vals,
+ 		     old_row_step, old_column_step,
+ 		     0, copy_r,
+ 		     0, copy_c);
+--- ./thirdparty/speech_tools/base_class/EST_TSimpleVector.cc.orig	2012-09-19 01:19:09.475122864 +0100
++++ ./thirdparty/speech_tools/base_class/EST_TSimpleVector.cc	2012-09-19 01:25:22.538491189 +0100
+@@ -40,6 +40,7 @@
+  /*                                                                       */
+  /*************************************************************************/
+ 
++#include <string.h>
+ #include "EST_TSimpleVector.h"
+ #include "EST_matrix_support.h"
+ #include <fstream>
+@@ -70,7 +71,7 @@
+   T *old_vals =NULL;
+   int old_offset = this->p_offset;
+ 
+-  just_resize(newn, &old_vals);
++  this->just_resize(newn, &old_vals);
+ 
+   if (set && old_vals)
+     {
+--- thirdparty/speech_tools/config/systems/Linux.mak~	2001-04-04 12:55:32.000000000 +0100
++++ thirdparty/speech_tools/config/systems/Linux.mak	2012-09-19 01:38:58.025234161 +0100
+@@ -52,7 +52,7 @@
+ NATIVE_AUDIO_MODULE = LINUX16
+ 
+ ## echo -n doesn't work
+-ECHO_N = /usr/bin/printf "%s"
++ECHO_N = /bin/printf "%s"
+ 
+ GNUTEST=test
+ 
