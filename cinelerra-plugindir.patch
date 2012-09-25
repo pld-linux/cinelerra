@@ -1,26 +1,61 @@
---- cinelerra/preferences.inc.orig	2012-09-22 13:38:33.839435794 +0100
-+++ cinelerra/preferences.inc	2012-09-22 13:38:36.049436001 +0100
-@@ -27,6 +27,12 @@
+diff -Nur cinelerra-4.4.orig/cinelerra/mwindow.C cinelerra-4.4/cinelerra/mwindow.C
+--- cinelerra-4.4.orig/cinelerra/mwindow.C	2012-06-05 07:38:16.000000000 +0100
++++ cinelerra-4.4/cinelerra/mwindow.C	2012-09-24 20:39:50.888929765 +0100
+@@ -376,7 +376,7 @@
+ 	char index_path[BCTEXTLEN];
+ 	FILE *index_fd = 0;
+ 	
+-	sprintf(index_path, "%s/%s", path, PLUGIN_FILE);
++	sprintf(index_path, "%s/%s", preferences->index_directory, PLUGIN_FILE);
+ //printf("MWindow::init_plugin_path %d %s plugindb=%p\n", __LINE__, index_path, plugindb);
+ 
+ 
+diff -Nur cinelerra-4.4.orig/cinelerra/preferences.C cinelerra-4.4/cinelerra/preferences.C
+--- cinelerra-4.4.orig/cinelerra/preferences.C	2012-01-07 23:02:41.000000000 +0000
++++ cinelerra-4.4/cinelerra/preferences.C	2012-09-24 20:39:50.342263049 +0100
+@@ -62,7 +62,10 @@
+ 
+ 
+ 
+-	get_exe_path(plugin_dir);
++	if (CINELERRA_PLUGIN_DIR)
++		sprintf(plugin_dir, CINELERRA_PLUGIN_DIR);
++	else
++		get_exe_path(plugin_dir);
+ 
+ 	sprintf(index_directory, BCASTDIR);
+ 	if(strlen(index_directory))
+diff -Nur cinelerra-4.4.orig/cinelerra/preferences.inc cinelerra-4.4/cinelerra/preferences.inc
+--- cinelerra-4.4.orig/cinelerra/preferences.inc	2008-07-23 05:30:59.000000000 +0100
++++ cinelerra-4.4/cinelerra/preferences.inc	2012-09-24 20:39:51.568929829 +0100
+@@ -27,6 +27,10 @@
  #define BACKUP_PATH BCASTDIR "backup.xml"
  #define DEAMON_PORT 400
  
-+#if defined(__x86_64__) || defined(__arch64__) || defined(__powerpc64__) || defined(__s390x__)
-+#define PLUGIN_DIR "/usr/lib64/cinelerra"
-+#else
-+#define PLUGIN_DIR "/usr/lib/cinelerra"
++#ifndef CINELERRA_PLUGIN_DIR
++#define CINELERRA_PLUGIN_DIR NULL
 +#endif
 +
  class Preferences;
  class PlaybackConfig;
  class AudioOutConfig;
---- cinelerra/preferences.C.orig	2012-01-07 23:02:41.000000000 +0000
-+++ cinelerra/preferences.C	2012-09-22 13:37:35.149430302 +0100
-@@ -62,7 +62,7 @@
+--- cinelerra-4.4.orig/cinelerra/Makefile	2012-09-25 18:13:01.004961617 +0100
++++ cinelerra-4.4/cinelerra/Makefile	2012-09-25 18:13:42.014965455 +0100
+@@ -1,5 +1,6 @@
+ include ../global_config
  
++CINELERRA_PLUGIN_DIR := NULL
+ AVC_DIR := $(shell expr ../thirdparty/libavc1394* )
+ DV_DIR := $(shell expr ../quicktime/thirdparty/libdv-*/ )
+ FLAC_DIR := $(shell expr ../thirdparty/flac*/ )
+@@ -422,8 +423,8 @@
+ 	-I../libmpeg3 \
+ 	-I$(SNDFILE_DIR)/src \
+ 	$(ESOUNDCFLAGS) \
+-	-I$(THEORA_DIR)/include
+-
++	-I$(THEORA_DIR)/include \
++	-DCINELERRA_PLUGIN_DIR=$(CINELERRA_PLUGIN_DIR)
  
- 
--	get_exe_path(plugin_dir);
-+	sprintf(plugin_dir, PLUGIN_DIR);
- 
- 	sprintf(index_directory, BCASTDIR);
- 	if(strlen(index_directory))
+ # Speed up linking with this linking sequence
+ ifeq ($(OBJDIR), alpha)

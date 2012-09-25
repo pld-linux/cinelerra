@@ -2,8 +2,7 @@
 # imho, it is pointless to build this app with system libraries until we
 # start submitting patches to the author (is that possible with his
 # current development and release strategy?)... anyway, the todo follows
-# - deal with fonts dir and plugins dir patches (cinelerra writes lists of
-#   plugins in plugins dir:/)
+# - deal with fonts dir patch
 # - review existing, but commented out patches
 # - send the existing patches to the author (so we do not have to maintain
 #   them forever)
@@ -112,7 +111,7 @@ Cinelerra była tworzona z myślą o zastąpieniu programu Broadcast 2000.
 #x#%patch7 -p1
 %patch8 -p1
 %patch9 -p0
-%patch10 -p0
+%patch10 -p1
 
 #x## assume we have <linux/videodev2.h> and <linux/dvb/*> (present in llh)
 #x#cat > hvirtual_config.h <<EOF
@@ -150,6 +149,7 @@ export CFLAGS="%{rpmcflags}"
 #x#    STRIP="true" \
 #x#    CC="%{__cxx}" \
 
+unset CFLAGS
 (
     # to replace -ltermcap with -tncurses
     cd thirdparty/speech_tools
@@ -158,7 +158,7 @@ export CFLAGS="%{rpmcflags}"
 )
 
 ./configure
-make
+make CINELERRA_PLUGIN_DIR='\"%{_libdir}/%{name}/\"'
 
 (
     # to link with libva
