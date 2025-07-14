@@ -101,17 +101,17 @@ Cinelerra była tworzona z myślą o zastąpieniu programu Broadcast 2000.
 
 %prep
 %setup -q
-#x#%patch0 -p1
-#x#%patch1 -p1
-%patch2 -p1
-#x#%patch3 -p1
-#x#%patch4 -p1
-#x#%patch5 -p1
-%patch6 -p0
-#x#%patch7 -p1
-%patch8 -p1
-%patch9 -p0
-%patch10 -p1
+#x#%%patch0 -p1
+#x#%%patch1 -p1
+%patch -P2 -p1
+#x#%%patch3 -p1
+#x#%%patch4 -p1
+#x#%%patch5 -p1
+%patch -P6 -p0
+#x#%%patch7 -p1
+%patch -P8 -p1
+%patch -P9 -p0
+%patch -P10 -p1
 
 #x## assume we have <linux/videodev2.h> and <linux/dvb/*> (present in llh)
 #x#cat > hvirtual_config.h <<EOF
